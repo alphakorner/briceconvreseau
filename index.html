@@ -1,0 +1,1001 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Alpha Nex — Formation IA & Dev Web | Brice Jct</title>
+<meta name="description" content="Formation exclusive IA, sites web, apps et logiciels sur mesure. Accès privé 10€/mois. Groupe Alpha Nex Strasbourg."/>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Cinzel:wght@600;700;900&display=swap" rel="stylesheet">
+<style>
+/* ━━━ RESET ━━━ */
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --gold:#ff2e3e;--gold-l:#ff5d6b;--gold-d:#8a1420;
+  --bg:#000;--bg2:#050505;
+  --wh:#fff;--gr:#555;--r:12px;
+  --nav-h:56px;
+}
+html,body{background:#000;color:#fff;font-family:'Inter',sans-serif;min-height:100vh;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+
+/* ━━━ GRAIN FILM — identique yanis ━━━ */
+body::before{
+  content:'';position:fixed;inset:0;z-index:2;pointer-events:none;
+  opacity:.04;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ━━━ INTRO ━━━ */
+#intro{
+  position:fixed;inset:0;z-index:9999;background:#000;
+  display:flex;align-items:center;justify-content:center;
+  overflow:hidden;
+}
+#intro.fade-out{animation:introFade .55s ease forwards}
+@keyframes introFade{to{opacity:0;transform:scale(1.04)}}
+#iCv{display:block}
+
+/* ── Texte intro bas ── */
+#intro-txt{
+  position:absolute;bottom:12%;left:0;right:0;
+  display:flex;flex-direction:column;align-items:center;gap:6px;
+  opacity:0;transform:scale(0.3);transform-origin:center bottom;
+  transition:opacity .18s ease, transform .38s cubic-bezier(.16,1.2,.4,1);
+  pointer-events:none;
+}
+#intro-txt.show{opacity:1;transform:scale(1)}
+.itxt-main{
+  font-family:'Cinzel',serif;font-size:clamp(15px,4vw,22px);font-weight:700;
+  color:#fff;letter-spacing:2px;text-align:center;
+  text-shadow:0 0 28px rgba(255,46,62,.6),0 0 8px rgba(255,46,62,.3);
+}
+.itxt-main em{color:var(--gold-l);font-style:normal}
+.itxt-sep{width:52px;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin:2px auto}
+.itxt-sub{font-size:10px;font-weight:500;color:rgba(255,255,255,.4);letter-spacing:3px;text-transform:uppercase;text-align:center}
+.itxt-badge{
+  display:inline-flex;align-items:center;gap:7px;
+  background:rgba(255,46,62,.07);border:1px solid rgba(255,46,62,.3);
+  border-radius:20px;padding:5px 16px;margin-top:4px;
+}
+.itxt-dot{width:6px;height:6px;border-radius:50%;background:var(--gold-l);box-shadow:0 0 6px var(--gold-l);animation:dotP 1.4s ease-in-out infinite}
+@keyframes dotP{0%,100%{opacity:.5;transform:scale(.8)}50%{opacity:1;transform:scale(1.2)}}
+.itxt-badge-txt{font-size:9.5px;font-weight:700;color:var(--gold-l);letter-spacing:1.5px;text-transform:uppercase}
+
+/* ━━━ PAGE ━━━ */
+#page{visibility:hidden;opacity:0}
+#page.show{visibility:visible;opacity:1;transition:opacity .4s ease}
+
+/* ━━━ PARTICLES CANVAS FOND — pleine page, identique yanis ━━━ */
+#cv{position:fixed;inset:0;z-index:1;pointer-events:none}
+
+/* ━━━ NAVBAR — 3D glass style yanis exact ━━━ */
+.navbar{
+  position:fixed;top:0;left:0;right:0;z-index:100;height:var(--nav-h);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 20px;gap:10px;
+  background:rgba(0,0,0,.92);
+  backdrop-filter:blur(28px) saturate(180%);
+  -webkit-backdrop-filter:blur(28px) saturate(180%);
+  border-bottom:1px solid rgba(255,255,255,.055);
+  box-shadow:0 1px 0 rgba(0,0,0,.5);
+}
+/* Boutons ronds 3D — copié yanis exact */
+.nav-social{display:flex;align-items:center;gap:10px}
+.nav-social a{
+  position:relative;width:36px;height:36px;
+  display:flex;align-items:center;justify-content:center;
+  border-radius:50%;text-decoration:none;cursor:pointer;
+  color:rgba(255,255,255,.95);
+  background:
+    radial-gradient(circle at 38% 32%,rgba(255,255,255,.09) 0%,transparent 55%),
+    radial-gradient(circle at 62% 68%,rgba(0,0,0,.55) 0%,transparent 60%),
+    rgba(8,8,16,.82);
+  border:none;
+  box-shadow:
+    0 -1px 0 rgba(255,255,255,.18),
+    0 1px 0 rgba(0,0,0,.7),
+    0 0 0 1px rgba(255,255,255,.08),
+    0 4px 16px rgba(0,0,0,.6),
+    0 2px 6px rgba(0,0,0,.4);
+  backdrop-filter:blur(16px) saturate(140%);
+  -webkit-backdrop-filter:blur(16px) saturate(140%);
+  transform:perspective(300px) rotateX(0) rotateY(0);
+  transform-style:preserve-3d;
+  transition:transform .3s cubic-bezier(.34,1.56,.64,1),box-shadow .28s,color .22s,background .22s;
+  animation:socialIn .5s cubic-bezier(.34,1.56,.64,1) both,btnBreath 4s ease-in-out infinite;
+}
+.nav-social a:nth-of-type(1){animation-delay:.05s,.55s}
+.nav-social a:nth-of-type(2){animation-delay:.2s,.75s}
+.nav-social a:nth-of-type(3){animation-delay:.35s,.95s}
+@keyframes socialIn{
+  0%{opacity:0;transform:perspective(300px) rotateX(0) rotateY(0) translateY(8px) scale(.88)}
+  60%{opacity:1;transform:perspective(300px) rotateX(0) rotateY(0) translateY(-2px) scale(1.06)}
+  80%{transform:perspective(300px) rotateX(0) rotateY(0) translateY(1px) scale(.98)}
+  100%{opacity:1;transform:perspective(300px) rotateX(0) rotateY(0) translateY(0) scale(1)}
+}
+@keyframes btnBreath{0%,100%{opacity:.82}50%{opacity:1}}
+/* Reflet dôme verre */
+.nav-social a::before{
+  content:'';position:absolute;top:3px;left:4px;right:10px;height:40%;
+  border-radius:50% 50% 40% 40%/60% 60% 40% 40%;
+  background:linear-gradient(180deg,rgba(255,255,255,.18) 0%,transparent 100%);
+  pointer-events:none;z-index:2;
+}
+/* Ripple hover */
+.nav-social a::after{
+  content:'';position:absolute;inset:0;border-radius:50%;
+  background:radial-gradient(circle,rgba(255,255,255,.2) 0%,transparent 68%);
+  opacity:0;transform:scale(.35);
+  transition:opacity .3s,transform .38s cubic-bezier(.16,1,.3,1);
+  pointer-events:none;z-index:1;
+}
+.nav-social a:hover::after{opacity:1;transform:scale(1)}
+.nav-social a:hover{animation:none;opacity:1;transform:perspective(300px) rotateX(-8deg) rotateY(4deg) translateY(-3px) scale(1.1)}
+/* Insta hover */
+.nav-social a[aria-label="Instagram"]:hover{
+  color:#f77737;
+  background:radial-gradient(circle at 38% 32%,rgba(255,255,255,.14) 0%,transparent 55%),radial-gradient(circle at 62% 68%,rgba(0,0,0,.5) 0%,transparent 60%),rgba(60,10,20,.88);
+  box-shadow:0 -1px 0 rgba(255,200,150,.35),0 1px 0 rgba(0,0,0,.8),0 0 0 1.5px rgba(225,48,108,.55),0 0 20px rgba(225,48,108,.55),0 0 40px rgba(188,24,136,.25),0 6px 24px rgba(0,0,0,.65);
+  filter:drop-shadow(0 0 8px rgba(225,48,108,.7));
+}
+.nav-social svg{width:17px;height:17px;flex-shrink:0;position:relative;z-index:3}
+
+/* ━━━ HERO ━━━ */
+.hero{
+  position:relative;min-height:100vh;
+  display:flex;flex-direction:column;align-items:center;
+  padding-top:var(--nav-h);
+  overflow:visible;z-index:3;
+}
+
+/* Boule mini — au-dessus de la photo profil */
+#hCv{
+  position:absolute;left:50%;
+  transform:translateX(-50%);
+  z-index:5;pointer-events:none;opacity:0;
+}
+
+/* ── ORBIT WRAPPER — identique yanis ── */
+.orbit-wrapper{
+  position:relative;z-index:4;
+  width:180px;height:180px;
+  margin-top:28px;
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;
+}
+/* Avatar ring doré */
+.founder-avatar{
+  position:relative;z-index:3;
+  width:130px;height:130px;border-radius:50%;padding:3px;
+  background:linear-gradient(135deg,#ff2e3e,#ff8a94,#b8902a);
+  animation:avGlow 3.6s ease-in-out 1s infinite;
+}
+@keyframes avGlow{
+  0%,100%{box-shadow:0 0 24px rgba(255,46,62,.4),0 0 8px rgba(255,46,62,.2)}
+  50%{box-shadow:0 0 52px rgba(255,60,72,.7),0 0 20px rgba(255,60,72,.35)}
+}
+.founder-avatar .av-inner{
+  width:100%;height:100%;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  /* FOND NOIR PUR — zéro bleuté */
+  background:#000;
+  border:3px solid #000;
+  overflow:hidden;
+}
+/* Si img réelle */
+.founder-avatar img{width:100%;height:100%;border-radius:50%;object-fit:cover;object-position:center 15%;display:block;background:#000}
+
+/* Orbit rings — identique yanis */
+.orbit-ring{position:absolute;border-radius:50%;pointer-events:none;top:50%;left:50%}
+.ring-1{
+  width:152px;height:152px;margin-top:-76px;margin-left:-76px;
+  border:.8px solid rgba(255,46,62,.3);
+  box-shadow:0 0 10px rgba(255,60,72,.08) inset;
+  animation:spinCW 5s linear infinite;
+}
+.ring-2{
+  width:178px;height:178px;margin-top:-89px;margin-left:-89px;
+  border:.5px solid rgba(255,60,72,.1);
+  animation:spinCCW 9s linear infinite;
+}
+@keyframes spinCW{to{transform:rotate(360deg)}}
+@keyframes spinCCW{to{transform:rotate(-360deg)}}
+/* Dot laser sur ring-1 */
+.orbit-dot{position:absolute;border-radius:50%;top:0;left:50%;transform:translate(-50%,-50%)}
+.dot-1{width:5px;height:5px;background:#ff8a94;box-shadow:0 0 3px 1px rgba(255,60,72,1),0 0 9px 3px rgba(255,46,62,.8),0 0 20px 7px rgba(255,46,62,.3)}
+.dot-2{width:3px;height:3px;background:#ff8a94;box-shadow:0 0 3px 1px rgba(255,180,186,.9),0 0 7px 3px rgba(255,60,72,.4)}
+
+/* Nom + tagline */
+.profile-name{
+  margin-top:12px;
+  font-family:'Cinzel',serif;
+  font-size:clamp(16px,4.2vw,22px);font-weight:700;
+  letter-spacing:8px;text-indent:8px;line-height:1;
+  background:linear-gradient(90deg,#fff 0%,#ff8a94 25%,#ff2e3e 50%,#ff8a94 75%,#fff 100%);
+  background-size:200% auto;
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  text-align:center;
+  animation:nameGradShift 6s linear 1.4s infinite,nameGlow 4.5s ease-in-out 1.6s infinite;
+  opacity:0;
+}
+@keyframes nameGradShift{0%{background-position:0% center}100%{background-position:200% center}}
+@keyframes nameGlow{0%,100%{filter:drop-shadow(0 0 24px rgba(255,46,62,.25))}50%{filter:drop-shadow(0 0 52px rgba(255,60,72,.55))}}
+.profile-tagline{
+  margin-top:4px;font-size:10px;font-weight:600;
+  color:rgba(255,255,255,.4);letter-spacing:4px;text-transform:uppercase;
+  text-align:center;opacity:0;
+}
+
+/* ── HERO INNER ── */
+.hero-inner{
+  position:relative;z-index:3;
+  display:flex;flex-direction:column;align-items:center;
+  width:100%;padding:0 20px;
+}
+
+/* Spacer dynamique — poussé par JS = hauteur boule mini */
+#ballSpacer{height:0}
+
+/* Headline */
+#headline{
+  margin-top:22px;text-align:center;max-width:400px;
+  position:relative;z-index:3;opacity:0;
+}
+.hl-main{font-size:clamp(15px,4.2vw,20px);font-weight:800;line-height:1.32;color:#fff;text-transform:uppercase;letter-spacing:.4px}
+.hl-gold{display:block;font-size:clamp(19px,5.2vw,26px);font-weight:900;color:var(--gold);text-transform:uppercase;line-height:1.2;margin-top:5px}
+.subline{margin-top:10px;font-size:12px;font-weight:500;color:rgba(255,255,255,.72);line-height:1.65}
+.ball-gap{height:10px}
+
+/* CTA */
+.cta-block{margin-top:0;display:flex;flex-direction:column;align-items:center;gap:14px;width:100%;max-width:400px;opacity:0}
+.cta-lbl{font-size:12px;font-style:italic;color:rgba(255,255,255,.6);text-align:center}
+.cta-lbl em{color:var(--gold);font-style:normal}
+.cta-btn{
+  width:100%;display:block;text-align:center;text-decoration:none;
+  background:linear-gradient(135deg,#0e0900,#1e1400,#0e0900);
+  border:1.5px solid var(--gold-d);border-radius:var(--r);
+  padding:18px 20px;cursor:pointer;position:relative;overflow:hidden;
+  transition:border-color .3s,transform .2s,box-shadow .3s;
+}
+.cta-btn::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,46,62,.1),transparent 55%);opacity:0;transition:opacity .3s}
+.cta-btn:hover{border-color:var(--gold);box-shadow:0 0 28px rgba(255,46,62,.28);transform:translateY(-1px)}
+.cta-btn:hover::after{opacity:1}
+.cta-t1{font-size:18px;font-weight:800;color:var(--gold-l);display:block}
+.cta-t2{font-size:11px;color:rgba(255,93,107,.6);margin-top:3px;display:block}
+
+/* Countdown */
+.cd{display:flex;gap:20px;align-items:baseline}
+.cd-u{display:flex;align-items:baseline;gap:4px}
+.cd-n{font-size:26px;font-weight:900;color:#fff;font-variant-numeric:tabular-nums;min-width:2ch}
+.cd-l{font-size:11px;color:var(--gr)}
+
+/* Social proof */
+.sp{margin-top:28px;display:flex;flex-direction:column;align-items:center;gap:10px;padding-bottom:32px;opacity:0}
+.stars{font-size:16px}
+.sp-count{font-size:12px;color:rgba(255,255,255,.7);font-weight:500}
+.av-grid{display:flex;flex-direction:column;align-items:center;gap:4px}
+.av-row{display:flex;gap:3px}
+.av{width:34px;height:34px;border-radius:50%;flex-shrink:0;background:linear-gradient(135deg,#111,#222);border:1.5px solid rgba(255,46,62,.25);display:flex;align-items:center;justify-content:center;font-size:14px}
+
+/* Stores */
+.tg-section{margin-top:4px;display:flex;flex-direction:column;align-items:center;gap:10px;padding-bottom:44px;opacity:0}
+.tg-lbl{font-size:12px;color:rgba(255,255,255,.45)}
+.tg-row{display:flex;gap:12px}
+.store-btn{
+  display:flex;align-items:center;gap:8px;
+  background:linear-gradient(135deg,#0a0700,#180f00);
+  border:1.5px solid var(--gold-d);border-radius:10px;
+  padding:9px 16px;cursor:pointer;text-decoration:none;
+  transition:border-color .3s,box-shadow .3s,transform .2s;
+}
+.store-btn:hover{border-color:var(--gold);box-shadow:0 0 18px rgba(255,46,62,.28);transform:translateY(-1px)}
+.store-btn svg{width:20px;height:20px;flex-shrink:0}
+.store-btn-text{display:flex;flex-direction:column;line-height:1.2}
+.sbt-top{font-size:7.5px;color:rgba(255,255,255,.45);font-weight:400;letter-spacing:.3px}
+.sbt-bot{font-size:11.5px;color:var(--gold-l);font-weight:700}
+
+/* ━━━ FEATURES ━━━ */
+.features{
+  position:relative;z-index:3;
+  background:rgba(0,0,0,.88);
+  backdrop-filter:blur(12px);
+  padding:52px 18px;display:flex;flex-direction:column;align-items:center;gap:28px;
+  border-top:1px solid rgba(255,46,62,.08);
+}
+.sec-title{text-align:center;font-size:clamp(14px,3.8vw,19px);font-weight:800;text-transform:uppercase;letter-spacing:.4px;max-width:380px}
+.sec-title .g{color:var(--gold)}
+.fgrid{display:flex;flex-direction:column;gap:11px;width:100%;max-width:430px}
+.fc{
+  display:flex;align-items:flex-start;gap:13px;
+  background:rgba(255,255,255,.025);
+  border:1px solid rgba(255,46,62,.14);
+  border-radius:14px;padding:16px 14px;
+  transition:border-color .3s,background .3s,transform .25s;
+  opacity:0;transform:translateY(16px);
+}
+.fc.vis{opacity:1;transform:translateY(0)}
+.fc:hover{border-color:rgba(255,46,62,.38);background:rgba(255,46,62,.035);transform:translateY(-2px)}
+.fc-ico{width:42px;height:42px;border-radius:10px;flex-shrink:0;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,rgba(255,46,62,.1),rgba(255,46,62,.03));border:1px solid rgba(255,46,62,.16)}
+.fc-ico svg{width:21px;height:21px}
+.fc-t{font-size:13px;font-weight:700;color:var(--gold-l);margin-bottom:3px}
+.fc-d{font-size:11.5px;color:rgba(255,255,255,.55);line-height:1.52}
+
+/* ━━━ PRICING ━━━ */
+.pricing{position:relative;z-index:3;padding:52px 18px;display:flex;flex-direction:column;align-items:center;gap:22px;background:rgba(0,0,0,.95)}
+.price-card{
+  width:100%;max-width:390px;
+  background:linear-gradient(160deg,#0c0600,#070707 50%,#0c0600);
+  border:1.5px solid var(--gold-d);border-radius:16px;
+  padding:30px 22px;text-align:center;position:relative;overflow:hidden;
+  opacity:0;transform:translateY(28px);transition:opacity .6s,transform .6s;
+}
+.price-card.vis{opacity:1;transform:translateY(0)}
+.price-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+.pbadge{display:inline-block;background:var(--gold);color:#000;font-size:9px;font-weight:800;letter-spacing:2px;text-transform:uppercase;padding:4px 12px;border-radius:20px;margin-bottom:14px}
+.ptitle{font-size:17px;font-weight:800;margin-bottom:6px}
+.pold{font-size:12px;color:var(--gr);text-decoration:line-through;margin-bottom:4px}
+.pamount{font-size:54px;font-weight:900;color:var(--gold-l);line-height:1}
+.pperiod{font-size:13px;color:rgba(255,255,255,.38);margin-bottom:22px}
+.plist{list-style:none;display:flex;flex-direction:column;gap:9px;text-align:left;margin-bottom:26px}
+.plist li{font-size:12px;color:rgba(255,255,255,.72);display:flex;gap:9px;align-items:flex-start}
+.plist li::before{content:'✦';color:var(--gold);font-size:9px;margin-top:4px;flex-shrink:0}
+.pcta{
+  width:100%;padding:15px;border:none;border-radius:10px;
+  background:linear-gradient(90deg,var(--gold-d),var(--gold),var(--gold-d));
+  background-size:200%;animation:shimmer 2.5s infinite;
+  font-size:15px;font-weight:800;color:#000;cursor:pointer;letter-spacing:.3px;
+  transition:transform .2s;
+}
+.pcta:hover{transform:scale(1.02)}
+@keyframes shimmer{0%{background-position:200%}100%{background-position:-200%}}
+
+/* ━━━ ABOUT ━━━ */
+.about{position:relative;z-index:3;background:rgba(0,0,0,.9);padding:52px 18px;display:flex;flex-direction:column;align-items:center;gap:18px;border-top:1px solid rgba(255,46,62,.06)}
+.about-card{width:100%;max-width:430px;background:rgba(255,255,255,.018);border:1px solid rgba(255,46,62,.13);border-radius:16px;padding:26px 20px;text-align:center;opacity:0;transform:translateY(22px);transition:opacity .6s,transform .6s}
+.about-card.vis{opacity:1;transform:translateY(0)}
+.about-av{width:72px;height:72px;border-radius:50%;background:#000;border:2px solid var(--gold);margin:0 auto 14px;display:flex;align-items:center;justify-content:center}
+.about-av svg{width:34px;height:34px}
+.about-name{font-size:17px;font-weight:800}
+.about-role{font-size:10px;color:var(--gold);font-weight:600;letter-spacing:1px;text-transform:uppercase;margin-bottom:10px}
+.about-desc{font-size:12px;color:rgba(255,255,255,.6);line-height:1.65}
+.tags{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-top:14px}
+.tag{background:rgba(255,46,62,.07);border:1px solid rgba(255,46,62,.22);border-radius:20px;padding:4px 11px;font-size:10px;color:var(--gold-l);font-weight:500}
+
+/* ━━━ FOOTER ━━━ */
+footer{position:relative;z-index:3;background:#000;padding:28px 18px;text-align:center;border-top:1px solid rgba(255,46,62,.07)}
+.f-name{font-size:11px;font-weight:700;color:var(--gold);letter-spacing:2px;text-transform:uppercase;margin-bottom:6px}
+.f-sig{font-size:10px;color:rgba(255,255,255,.22)}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+
+/* ═══════════ ALPHA NEX — Consentement / Comptes (additif) ═══════════ */
+.an-ov{position:fixed;inset:0;z-index:100000;display:none;align-items:center;justify-content:center;padding:22px;background:rgba(0,0,0,.9);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}
+.an-ov.show{display:flex;animation:anFade .3s ease}
+@keyframes anFade{from{opacity:0}to{opacity:1}}
+@keyframes anPop{0%{opacity:0;transform:scale(.94)}100%{opacity:1;transform:scale(1)}}
+.an-card{width:100%;max-width:382px;background:linear-gradient(160deg,#0c0700,#070707 55%,#0c0700);border:1.5px solid var(--gold-d);border-radius:18px;padding:26px 22px;box-shadow:0 0 60px rgba(255,46,62,.16),0 20px 60px rgba(0,0,0,.6);animation:anPop .42s cubic-bezier(.34,1.56,.64,1);position:relative}
+.an-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+.an-x{position:absolute;top:12px;right:14px;background:none;border:none;color:rgba(255,255,255,.4);font-size:17px;cursor:pointer;font-family:inherit}
+.an-ic{width:56px;height:56px;margin:0 auto 12px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:rgba(255,46,62,.1);border:1px solid rgba(255,46,62,.3);font-size:26px}
+.an-t{font-family:'Cinzel',serif;font-size:17px;font-weight:700;text-align:center;margin-bottom:8px;color:#fff}
+.an-d{font-size:12.5px;color:rgba(255,255,255,.62);line-height:1.6;text-align:center;margin-bottom:18px}
+.an-d b{color:var(--gold-l)}
+.an-btns{display:flex;flex-direction:column;gap:9px}
+.an-b{width:100%;padding:14px;border:none;border-radius:11px;font-size:14px;font-weight:800;cursor:pointer;font-family:inherit}
+.an-b-gold{background:linear-gradient(90deg,var(--gold-d),var(--gold-l),var(--gold-d));background-size:200%;animation:shimmer 2.6s linear infinite;color:#000}
+.an-b-ghost{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.14);color:rgba(255,255,255,.7)}
+.an-note{font-size:10px;color:rgba(255,255,255,.32);text-align:center;margin-top:12px;line-height:1.5}
+.an-field{margin-bottom:11px}
+.an-field label{display:block;font-size:11px;color:rgba(255,255,255,.5);margin-bottom:5px}
+.an-field input{width:100%;padding:12px 13px;background:rgba(255,255,255,.03);border:1.5px solid rgba(255,46,62,.18);border-radius:10px;color:#fff;font-size:14px;font-family:inherit;outline:none}
+.an-field input:focus{border-color:var(--gold)}
+.an-tabs{display:flex;gap:6px;background:rgba(255,255,255,.03);border:1px solid rgba(255,46,62,.14);border-radius:11px;padding:4px;margin-bottom:16px}
+.an-tab{flex:1;padding:9px;border:none;background:none;color:rgba(255,255,255,.55);font-size:12.5px;font-weight:700;border-radius:8px;cursor:pointer;font-family:inherit}
+.an-tab.on{background:linear-gradient(135deg,rgba(255,46,62,.22),rgba(255,46,62,.08));color:var(--gold-l)}
+.an-msg{font-size:12px;text-align:center;margin-top:10px;min-height:15px}
+.an-msg.err{color:#ff9a9a}.an-msg.ok{color:#8fe0b0}
+.an-toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(20px);z-index:100010;background:rgba(20,16,4,.96);border:1px solid var(--gold-d);color:#fff;padding:12px 20px;border-radius:12px;font-size:13px;font-weight:600;opacity:0;pointer-events:none;transition:opacity .3s,transform .3s;box-shadow:0 10px 40px rgba(0,0,0,.6)}
+.an-toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+</style>
+<meta name="theme-color" content="#ff2e3e"/>
+<style id="an2026">
+:root{--amber:#ffd24a;--amber-d:#e0a520}
+.pbadge{background:linear-gradient(90deg,var(--amber-d),var(--amber),var(--amber-d))!important;background-size:200% auto!important;color:#241400!important}
+.stars{filter:drop-shadow(0 0 8px rgba(255,210,74,.55))}
+.profile-tagline{color:#ff6b76!important}
+.brand-logo{font-family:'Cinzel',serif;font-weight:900;font-size:15px;letter-spacing:1.4px;white-space:nowrap;background:linear-gradient(100deg,#8a1420 0%,#ff2e3e 20%,#ffffff 38%,#ff5d6b 48%,#ffffff 60%,#ff2e3e 78%,#8a1420 100%);background-size:250% auto;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;animation:metalShine 4s linear infinite;filter:drop-shadow(0 1px 2px rgba(0,0,0,.55))}
+@keyframes metalShine{0%{background-position:0% center}100%{background-position:250% center}}
+@media (prefers-reduced-motion:no-preference){
+@keyframes anFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+@keyframes anFloatS{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+@keyframes anGlowR{0%,100%{box-shadow:0 12px 34px rgba(0,0,0,.5),0 0 0 rgba(255,46,62,0)}50%{box-shadow:0 12px 34px rgba(0,0,0,.5),0 0 30px rgba(255,46,62,.45)}}
+@keyframes anSheen{0%{background-position:0% 50%}100%{background-position:200% 50%}}
+.fc{animation:anFloat 6s ease-in-out infinite}
+.fc:nth-child(2){animation-delay:.5s}.fc:nth-child(3){animation-delay:1s}.fc:nth-child(4){animation-delay:1.5s}.fc:nth-child(5){animation-delay:2s}.fc:nth-child(6){animation-delay:2.5s}
+.price-card{animation:anFloat 7.5s ease-in-out infinite}
+.about-card{animation:anFloatS 8s ease-in-out infinite}
+.cta-btn,.pcta{animation:anGlowR 3.2s ease-in-out infinite}
+.hl-gold,.sec-title .g,.pamount{background-size:200% auto;animation:anSheen 4.5s linear infinite}
+}
+</style>
+</head>
+<body>
+
+<!-- INTRO -->
+<div id="intro">
+  <canvas id="iCv"></canvas>
+  <div id="intro-txt">
+    <p class="itxt-main">Bienvenue sur le site de <em>Brice Jct</em></p>
+    <div class="itxt-sep"></div>
+    <p class="itxt-sub">Ingénieur Full-Stack · Alpha Nex Strasbourg</p>
+    <div class="itxt-badge">
+      <span class="itxt-dot"></span>
+      <span class="itxt-badge-txt">Expert IA · Agréé &amp; Certifié Anthropic</span>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE -->
+<div id="page">
+
+<!-- Particles fond — identique yanis -->
+<canvas id="cv"></canvas>
+
+<!-- NAVBAR 3D glass — identique yanis -->
+<nav class="navbar">
+  <div class="brand-logo">Alpha&nbsp;Protocol</div>
+  <div class="nav-social">
+    <a href="#" role="button" id="anAccountBtn" aria-label="Espace membre" title="Espace membre">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.3"/><path d="M5.5 20a6.5 6.5 0 0 1 13 0"/></svg>
+    </a>
+    <a href="#" aria-label="Instagram" title="Instagram">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="2" y="2" width="20" height="20" rx="6"/>
+        <circle cx="12" cy="12" r="4.2"/>
+        <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/>
+      </svg>
+    </a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+
+  <!-- Mini boule particules — au-dessus de la photo, positionnée par JS -->
+  <canvas id="hCv"></canvas>
+
+  <!-- ORBIT WRAPPER — identique yanis -->
+  <div class="orbit-wrapper" id="orbitWrap">
+    <!-- Anneaux orbitaux -->
+    <div class="orbit-ring ring-1">
+      <div class="orbit-dot dot-1"></div>
+    </div>
+    <div class="orbit-ring ring-2">
+      <div class="orbit-dot dot-2"></div>
+    </div>
+    <!-- Avatar — photo dans le même repo GitHub que index.html -->
+    <div class="founder-avatar">
+      <img src="brice-jct.png" alt="Brice Jct" draggable="false"/>
+    </div>
+  </div>
+
+  <p class="profile-name" id="profileName">BRICE JCT</p>
+  <p class="profile-tagline" id="profileTagline">INGÉNIEUR · FORMATEUR · STRASBOURG</p>
+
+  <div class="hero-inner">
+    <div id="ballSpacer"></div>
+
+    <div id="headline">
+      <p class="hl-main">DEVIENS AUTONOME AVEC L'IA &amp; LANCE TON BUSINESS EN</p>
+      <span class="hl-gold">MOINS DE 72H<br>ACCOMPAGNÉ EN DIRECT</span>
+      <p class="subline">
+        <strong>IA appliquée · Sites web · Apps · Logiciels sur mesure</strong><br>
+        Formation privée + accompagnement réel — appels de suivi &amp; WhatsApp perso avec Brice pour te faire réussir vite.<br>
+        Débutant accepté &nbsp;·&nbsp; Résultats concrets &nbsp;·&nbsp; Accès immédiat
+      </p>
+    </div>
+    <div class="ball-gap"></div>
+
+    <div class="cta-block" id="ctaBlock">
+      <p class="cta-lbl">⬇️ Clique ci-dessous et sécurise ta <em>⬇️</em> place</p>
+      <a href="compte.html" class="cta-btn">
+        <span class="cta-t1">Débloquer l'accès à 10€</span>
+        <span class="cta-t2">★ Offre exclusive limitée — 1 mois complet</span>
+      </a>
+      <div class="cd">
+        <div class="cd-u"><span class="cd-n" id="cdH">00</span><span class="cd-l">Hours</span></div>
+        <div class="cd-u"><span class="cd-n" id="cdM">15</span><span class="cd-l">Minutes</span></div>
+        <div class="cd-u"><span class="cd-n" id="cdS">00</span><span class="cd-l">Seconds</span></div>
+      </div>
+    </div>
+
+    <div class="sp" id="spBlock">
+      <div style="display:flex;align-items:center;gap:8px">
+        <span class="stars">⭐⭐⭐⭐⭐</span>
+        <span class="sp-count">150+ Avis réels vérifiés</span>
+      </div>
+      <div class="av-grid">
+        <div class="av-row">
+          <div class="av">👩</div><div class="av">👨</div><div class="av">🧑</div>
+          <div class="av">👩‍💼</div><div class="av">👨‍💻</div><div class="av">🧑‍🎓</div><div class="av">👩‍🔬</div>
+        </div>
+        <div class="av-row">
+          <div class="av">🧔</div><div class="av">👱‍♀️</div><div class="av">👨‍🏫</div>
+          <div class="av">👩‍💻</div><div class="av">🧑‍🚀</div><div class="av">👨‍🎨</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features">
+  <h2 class="sec-title">CE QUE TU OBTIENS DANS LA <span class="g">FORMATION PRIVÉE</span></h2>
+  <div class="fgrid">
+    <div class="fc"><div class="fc-ico"><svg viewBox="0 0 24 24" fill="none" stroke="#ff2e3e" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="9" cy="9" r="1.5" fill="#ff2e3e" stroke="none"/><circle cx="15" cy="9" r="1.5" fill="#ff2e3e" stroke="none"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><path d="M12 3v-1M12 22v-1M3 12H2M22 12h-1"/></svg></div><div><p class="fc-t">Formation IA Complète & Appliquée</p><p class="fc-d">Automatisation, prompt engineering, intégration dans tes projets réels. Zéro bullshit, 100% pratique.</p></div></div>
+    <div class="fc"><div class="fc-ico"><svg viewBox="0 0 24 24" fill="none" stroke="#ff2e3e" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3.6 9h16.8M3.6 15h16.8M12 3c-2.5 3-4 5.7-4 9s1.5 6 4 9M12 3c2.5 3 4 5.7 4 9s-1.5 6-4 9"/></svg></div><div><p class="fc-t">Conception & Intégration Web</p><p class="fc-d">Sites pro, PWA, interfaces modernes. Next.js · Supabase · Tailwind · Cloudflare. Déploiement zéro coût.</p></div></div>
+    <div class="fc"><div class="fc-ico"><svg viewBox="0 0 24 24" fill="none" stroke="#ff2e3e" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="3"/><circle cx="12" cy="18" r="1" fill="#ff2e3e" stroke="none"/><path d="M9 6h6"/></svg></div><div><p class="fc-t">Apps & Logiciels Sur Mesure</p><p class="fc-d">Applications complètes mobile-first pour toi ou tes clients. Performantes, scalables.</p></div></div>
+    <div class="fc"><div class="fc-ico"><svg viewBox="0 0 24 24" fill="none" stroke="#ff2e3e" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L4 6v6c0 5.25 3.5 9.74 8 11 4.5-1.26 8-5.75 8-11V6L12 2z"/><path d="M9 12l2 2 4-4"/></svg></div><div><p class="fc-t">Cybersécurité & OSINT Terrain</p><p class="fc-d">Comprendre les failles pour les protéger. Audit, OSINT, bonnes pratiques dans chaque projet.</p></div></div>
+    <div class="fc"><div class="fc-ico"><svg viewBox="0 0 24 24" fill="none" stroke="#ff2e3e" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M6 20v-1a6 6 0 0 1 12 0v1"/></svg></div><div><p class="fc-t">Accompagnement Privé Direct</p><p class="fc-d">Accès direct à Brice — review de code, retours projets. Groupe Telegram privé actif chaque jour.</p></div></div>
+    <div class="fc"><div class="fc-ico"><svg viewBox="0 0 24 24" fill="none" stroke="#ff2e3e" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13,2 3,14 12,14 11,22 21,10 12,10"/></svg></div><div><p class="fc-t">Opportunités & Veille Active</p><p class="fc-d">Alertes missions freelance, tendances tech, outils gratuits. Toujours une longueur d'avance.</p></div></div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="pricing" id="pricing">
+  <h2 class="sec-title">UN SEUL ACCÈS. <span class="g">PRIX IMBATTABLE.</span></h2>
+  <div class="price-card">
+    <span class="pbadge">🔥 Offre Lancement</span>
+    <p class="ptitle">Accès Formation + Accompagnement Privé</p>
+    <p class="pold">Valeur réelle : 299€/mois</p>
+    <p class="pamount">10€</p>
+    <p class="pperiod">/ 1 mois complet — tout inclus</p>
+    <ul class="plist">
+      <li>Objectif : une base solide avec l'IA en moins de 72h</li>
+      <li>Formation IA avancée + mises à jour continues</li>
+      <li>Conception web, apps, logiciels sur mesure</li>
+      <li>Accompagnement privé direct avec Brice Jct</li>
+      <li>Kits &amp; packs exclusifs prêts à l'emploi pour lancer &amp; scaler ton business</li>
+      <li>Accompagnement réel : appels + suivi WhatsApp perso pour chaque client</li>
+      <li>Groupe Telegram privé actif &amp; communauté</li>
+      <li>Ressources, templates &amp; outils exclusifs</li>
+    </ul>
+    <button class="pcta" onclick="location.href='compte.html'">🚀 Je rejoins maintenant pour 10€</button>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="about">
+  <h2 class="sec-title">TON <span class="g">FORMATEUR</span></h2>
+  <div class="about-card">
+    <div class="about-av"><svg viewBox="0 0 36 36" fill="none"><circle cx="18" cy="13" r="7" stroke="#ff2e3e" stroke-width="1.5"/><path d="M4 34c0-7.73 6.27-14 14-14s14 6.27 14 14" stroke="#ff2e3e" stroke-width="1.5" stroke-linecap="round"/><path d="M14 13l2 2 4-4" stroke="#ff5d6b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <p class="about-name">Brice Jacotet</p>
+    <p class="about-role">Ingénieur Full-Stack Senior · Strasbourg</p>
+    <p class="about-desc">Fondateur du Groupe Alpha Nex Strasbourg — Alpha OS, Alpha Korner.<br><br>Développeur indépendant senior, formateur certifié Synergologie (double niveau), expert cybersécurité &amp; OSINT.<br><br>Projet phare : <strong style="color:var(--gold)">Strass&amp;Go</strong> — PWA temps réel CTS bus/tram Strasbourg.</p>
+    <div class="tags"><span class="tag">IA Applied</span><span class="tag">Next.js</span><span class="tag">Supabase</span><span class="tag">Cybersécurité</span><span class="tag">OSINT</span><span class="tag">Strasbourg 67</span><span class="tag">Alpha Nex</span></div>
+  </div>
+</section>
+
+<footer>
+  <p class="f-name">Alpha Nex · Groupe Alpha Nex Strasbourg</p>
+  <p class="f-sig" style="cursor:pointer" onclick="location.href='admin.html'" title="·">@ By Brice Jct · Alpha OS · Groupe Alpha Nex Strasbourg</p>
+</footer>
+
+</div><!-- /page -->
+
+<!-- ═══ ALPHA NEX — Consentement + Compte ═══ -->
+<div class="an-ov" id="an-consent"><div class="an-card">
+  <div class="an-ic">📍</div>
+  <div class="an-t">Adapte ta formation à ta région</div>
+  <div class="an-d">Autorise Alpha Nex à connaître ta position pour <b>adapter les formations à ton pays</b>. On utilise en priorité le <b>GPS de ton appareil</b> (précis). Tu peux refuser : on garde une localisation <b>approximative par IP</b>.</div>
+  <div class="an-btns"><button class="an-b an-b-gold" id="an-consent-yes">✓ Autoriser ma position</button><button class="an-b an-b-ghost" id="an-consent-no">Continuer sans</button></div>
+  <div class="an-note">Données privées, jamais revendues. Modifiable via le 🔒 de ton navigateur.</div>
+</div></div>
+<div class="an-ov" id="an-auth"><div class="an-card">
+  <button class="an-x" id="an-auth-x">✕</button>
+  <div class="an-ic">👤</div>
+  <div class="an-t">Espace membre</div>
+  <div class="an-tabs"><button class="an-tab on" id="an-tab-login">Connexion</button><button class="an-tab" id="an-tab-signup">Créer un compte</button></div>
+  <div id="an-form-login">
+    <div class="an-field"><label>Email</label><input type="email" id="an-li-email" placeholder="jean@email.com" autocomplete="email"></div>
+    <div class="an-field"><label>Mot de passe</label><input type="password" id="an-li-pass" placeholder="••••••••" autocomplete="current-password"></div>
+    <button class="an-b an-b-gold" id="an-li-go">Me connecter</button>
+  </div>
+  <div id="an-form-signup" style="display:none">
+    <div class="an-field"><label>Nom / Prénom</label><input type="text" id="an-su-name" placeholder="Jean Dupont"></div>
+    <div class="an-field"><label>Email</label><input type="email" id="an-su-email" placeholder="jean@email.com"></div>
+    <div class="an-field"><label>Mot de passe</label><input type="password" id="an-su-pass" placeholder="6 caractères min."></div>
+    <button class="an-b an-b-gold" id="an-su-go">Créer mon compte</button>
+  </div>
+  <div class="an-msg" id="an-auth-msg"></div>
+</div></div>
+<div class="an-toast" id="an-toast"></div>
+
+<script>
+(function(){'use strict';
+
+/* ━━━ UTILS ━━━ */
+const lerp=(a,b,t)=>a+(b-a)*t;
+const clamp=(v,a,b)=>Math.min(b,Math.max(a,v));
+const DPR=Math.min(window.devicePixelRatio||1,2);
+function setupCanvas(el,w,h){
+  h=h||w;el.style.width=w+'px';el.style.height=h+'px';
+  el.width=w*DPR;el.height=h*DPR;
+  const c=el.getContext('2d');c.scale(DPR,DPR);return c;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   PARTICLES FOND — CODE EXACT YANIS (index.html copié)
+   72 points blancs interconnectés, wrap toroïdal, pulse sinusoïdal
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+(function(){
+  const cv=document.getElementById('cv');
+  const ctx=cv.getContext('2d');
+  let W,H;
+  const N=72;
+
+  function resize(){W=cv.width=window.innerWidth;H=cv.height=window.innerHeight;}
+  resize();
+  window.addEventListener('resize',resize,{passive:true});
+
+  function mk(){
+    return{
+      x:Math.random()*W,y:Math.random()*H,
+      vx:(Math.random()-.5)*.22,vy:(Math.random()-.5)*.18,
+      ox:Math.random()*Math.PI*2,oy:Math.random()*Math.PI*2,
+      osx:(Math.random()-.5)*.007,osy:(Math.random()-.5)*.006,
+      /* BOOST luminosité : aBase .45→.85 — jamais invisible */
+      aBase:Math.random()*.40+.45,
+      aPhase:Math.random()*Math.PI*2,
+      aSpeed:Math.random()*.022+.01,
+      /* Points plus gros : r 1.0→2.8 */
+      r:Math.random()*1.8+1.0,
+    };
+  }
+  const pts=Array.from({length:N},mk);
+  /* Connexions bien visibles : dist 160px, alpha max .45 */
+  const CONN_DIST=160,CONN_MAX=.45;
+
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    /* Fond noir profond pur */
+    ctx.fillStyle='#000';
+    ctx.fillRect(0,0,W,H);
+
+    pts.forEach(p=>{
+      p.ox+=p.osx;p.oy+=p.osy;p.aPhase+=p.aSpeed;
+      p.x+=p.vx+Math.sin(p.ox)*.25;
+      p.y+=p.vy+Math.cos(p.oy)*.2;
+      if(p.x<-2)p.x=W+2;if(p.x>W+2)p.x=-2;
+      if(p.y<-2)p.y=H+2;if(p.y>H+2)p.y=-2;
+    });
+
+    for(let i=0;i<N;i++){
+      for(let j=i+1;j<N;j++){
+        const dx=pts[i].x-pts[j].x,dy=pts[i].y-pts[j].y;
+        const d2=dx*dx+dy*dy;
+        if(d2<CONN_DIST*CONN_DIST){
+          const t=1-Math.sqrt(d2)/CONN_DIST;
+          ctx.beginPath();
+          ctx.strokeStyle=`rgba(255,255,255,${CONN_MAX*t*t})`;
+          ctx.lineWidth=.5;
+          ctx.moveTo(pts[i].x,pts[i].y);ctx.lineTo(pts[j].x,pts[j].y);
+          ctx.stroke();
+        }
+      }
+    }
+    pts.forEach(p=>{
+      const a=p.aBase+Math.sin(p.aPhase)*p.aBase*.5;
+      ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      ctx.fillStyle=`rgba(255,255,255,${Math.max(.38,a)})`;ctx.fill();
+    });
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+/* ━━━ SPHERE FACTORY ━━━ */
+function makeSphere(N,R){
+  const pts=[];const GR=(1+Math.sqrt(5))/2;
+  for(let i=0;i<N;i++){
+    const theta=Math.acos(1-2*(i+.5)/N);
+    const phi=2*Math.PI*i/GR;
+    const r=R*(.78+.22*Math.random());
+    pts.push({
+      x:r*Math.sin(theta)*Math.cos(phi),
+      y:r*Math.sin(theta)*Math.sin(phi),
+      z:r*Math.cos(theta),
+      /* BOOST taille+luminosité boule : bs .55→2.6, ba .55→1.0 */
+      bs:.55+Math.random()*2.05,ba:.55+Math.random()*.45,
+      ts:.006+Math.random()*.05,to:Math.random()*Math.PI*2,
+      gold:Math.random()<.60
+    });
+  }
+  return pts;
+}
+
+/* ━━━ DRAW SPHERE ━━━ */
+function drawSphere(ctx,pts,S,R,aY,aX,fr,aS){
+  const cx=S/2,cy=S/2;
+  ctx.clearRect(0,0,S,S);
+  const cY=Math.cos(aY),sY=Math.sin(aY),cX=Math.cos(aX),sX=Math.sin(aX);
+  const proj=pts.map(p=>{
+    const x1=p.x*cY+p.z*sY,z1=-p.x*sY+p.z*cY;
+    const y2=p.y*cX-z1*sX,z2=p.y*sX+z1*cX;
+    const fov=700;const sc=fov/(fov+z2+R);
+    const tw=.5+.5*Math.sin(fr*p.ts+p.to);
+    return{sx:cx+x1*sc,sy:cy+y2*sc,sz:p.bs*sc*(.5+.5*tw),
+      al:p.ba*(.38+.62*tw)*aS,nz:(z2+R)/(2*R),gold:p.gold,z:z2};
+  });
+  proj.sort((a,b)=>a.z-b.z);
+  for(const p of proj){
+    if(p.sz<.05)continue;
+    /* brightness min .35 — jamais sombre côté dos de la boule */
+    const br=lerp(.35,1,p.nz);
+    let r,g,b;
+    if(p.gold){r=Math.round(lerp(150,255,br));g=Math.round(lerp(8,46,br));b=Math.round(lerp(12,54,br));}
+    else{r=Math.round(lerp(190,255,br));g=Math.round(lerp(22,74,br));b=Math.round(lerp(26,78,br));}
+    ctx.globalAlpha=clamp(p.al*br,0,1);
+    /* glow sur TOUS les points visibles, pas seulement le devant */
+    if(p.nz>.35&&p.sz>.3){ctx.shadowColor=p.gold?'rgba(255,46,62,1)':'rgba(255,110,116,.75)';ctx.shadowBlur=p.sz*5;}
+    else{ctx.shadowBlur=0;}
+    ctx.fillStyle=`rgb(${r},${g},${b})`;
+    ctx.beginPath();ctx.arc(p.sx,p.sy,p.sz,0,Math.PI*2);ctx.fill();
+  }
+  ctx.globalAlpha=1;ctx.shadowBlur=0;
+  const grd=ctx.createRadialGradient(cx,cy,R*.2,cx,cy,R*1.2);
+  grd.addColorStop(0,'rgba(0,0,0,0)');grd.addColorStop(.55,'rgba(0,0,0,0)');grd.addColorStop(1,'rgba(0,0,0,.97)');
+  ctx.fillStyle=grd;ctx.fillRect(0,0,S,S);
+}
+
+/* ━━━ INTRO ━━━ */
+const iEl=document.getElementById('iCv');
+const ISIZE=Math.min(window.innerWidth,360);
+const iCtx=setupCanvas(iEl,ISIZE);
+const IR=ISIZE*.43;
+const iPts=makeSphere(6500,IR);
+let iAY=0,iAX=.16,iFr=0,iRunning=true;
+const T0=performance.now();
+let introTxtShown=false;
+
+/* ── Particules de convergence vers la boule ──
+   120 pts éparpillés sur le canvas intro → attirent vers cx,cy pendant 300ms (600→900ms)
+   Chaque pt : position aléatoire, vélocité nulle, puis force d'attraction progressive
+*/
+const CX=ISIZE/2,CY=ISIZE/2;
+const CONV_N=120;
+const convPts=Array.from({length:CONV_N},()=>({
+  x:(Math.random()-0.5)*ISIZE*1.8+CX,   // éparpillés au-delà du canvas
+  y:(Math.random()-0.5)*ISIZE*1.8+CY,
+  vx:0,vy:0,
+  r:Math.random()*1.4+0.5,
+  gold:Math.random()<0.55,
+  a:Math.random()*0.5+0.3,              // alpha initial
+}));
+let convActive=false;   // activé à 600ms
+let convProgress=0;     // 0→1 sur 300ms
+
+function drawConv(progress){
+  /* Force d'attraction vers cx,cy — quadratique pour effet "aspiration" */
+  const force=progress*progress*0.18;
+  convPts.forEach(p=>{
+    const dx=CX-p.x, dy=CY-p.y;
+    const dist=Math.sqrt(dx*dx+dy*dy)||1;
+    /* Accélération vers centre proportionnelle à la distance */
+    p.vx+=dx/dist*force*dist*0.012;
+    p.vy+=dy/dist*force*dist*0.012;
+    p.x+=p.vx;p.y+=p.vy;
+    /* Alpha augmente au fur et à mesure qu'ils se rapprochent */
+    const normDist=Math.min(dist/(ISIZE*0.8),1);
+    const alpha=p.a*(0.4+0.6*progress)*(0.3+0.7*(1-normDist));
+    /* Glow doré ou blanc */
+    if(p.gold){
+      iCtx.shadowColor='rgba(255,46,62,.85)';iCtx.shadowBlur=p.r*5;
+      iCtx.fillStyle=`rgba(255,46,62,${Math.min(alpha,0.9)})`;
+    } else {
+      iCtx.shadowColor='rgba(255,110,116,.6)';iCtx.shadowBlur=p.r*4;
+      iCtx.fillStyle=`rgba(255,110,116,${Math.min(alpha,0.9)})`;
+    }
+    iCtx.globalAlpha=1;
+    iCtx.beginPath();iCtx.arc(p.x,p.y,p.r,0,Math.PI*2);iCtx.fill();
+  });
+  iCtx.globalAlpha=1;iCtx.shadowBlur=0;
+}
+
+function introTick(ts){
+  if(!iRunning)return;
+  const el=ts-T0;let spd;
+
+  if(el<400){
+    /* Phase 1 : rotation douce */
+    spd=.003;
+  }
+  else if(el<600){
+    /* Phase 2 : accélération */
+    const t=(el-400)/200;spd=lerp(.003,.06,t*t);
+  }
+  else if(el<900){
+    /* Phase 3 : convergence particules + accélération suite
+       600→900ms = 300ms de convergence */
+    const t=(el-600)/300; // 0→1
+    convProgress=t;
+    convActive=true;
+    spd=lerp(.06,.11,(t*t));
+  }
+  else if(el<1200){
+    /* Phase 4 : montée + texte */
+    convActive=false;
+    const t=(el-900)/300;const e=1-Math.pow(1-t,2);
+    spd=lerp(.11,.065,e);
+    iEl.style.transform=`translateY(${-e*ISIZE*.36}px)`;
+    if(!introTxtShown){
+      introTxtShown=true;
+      requestAnimationFrame(()=>{const tx=document.getElementById('intro-txt');if(tx)tx.classList.add('show');});
+    }
+  } else {
+    spd=.065;
+    iEl.style.transform=`translateY(${-ISIZE*.36}px)`;
+  }
+
+  iAY+=spd;iFr++;
+  drawSphere(iCtx,iPts,ISIZE,IR,iAY,iAX,iFr,1);
+  /* Dessine les particules de convergence PAR-DESSUS la sphère */
+  if(convActive && convProgress>0) drawConv(convProgress);
+  requestAnimationFrame(introTick);
+}
+requestAnimationFrame(introTick);
+
+setTimeout(()=>{
+  iRunning=false;
+  document.getElementById('intro').classList.add('fade-out');
+  document.getElementById('page').classList.add('show');
+},1600);
+setTimeout(()=>{const ov=document.getElementById('intro');if(ov)ov.remove();},2200);
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   MINI BOULE — AU-DESSUS de l'orbit-wrapper (photo)
+   HSIZE = orbit-wrapper.width / 3 ≈ 60px
+   Positionnée par JS pile au-dessus du cercle
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+const hEl=document.getElementById('hCv');
+const HSIZE=64; // mini : 64px
+const hCtx=setupCanvas(hEl,HSIZE);
+const HR=24;
+const hPts=makeSphere(2200,HR);
+let hAY=0,hAX=.22,hFr=0;
+
+function positionBall(){
+  const orbit=document.getElementById('orbitWrap');
+  const hero=document.querySelector('.hero');
+  const sp=document.getElementById('ballSpacer');
+  if(!orbit||!hero||!sp)return;
+  const heroRect=hero.getBoundingClientRect();
+  const orbRect=orbit.getBoundingClientRect();
+  const topRel=orbRect.top-heroRect.top;
+  /* Centre boule = juste au-dessus du top de l'orbit-wrapper, 2px gap */
+  hEl.style.top=(topRel-HSIZE-2)+'px';
+  sp.style.height='0px'; /* pas de spacer — boule absolute hors flux */
+}
+
+setTimeout(()=>{
+  positionBall();
+  hEl.style.opacity='1';
+  hEl.style.transition='opacity .4s ease';
+
+  /* Animate blocs */
+  function ab(id,ms){
+    setTimeout(()=>{
+      const el=document.getElementById(id)||document.querySelector('.'+id);
+      if(!el)return;
+      el.style.transition='opacity .6s ease, transform .6s ease';
+      el.style.transform='translateY(0)';
+      el.style.opacity='1';
+    },ms);
+  }
+  /* Init */
+  ['orbitWrap','profileName','profileTagline','headline','ctaBlock','spBlock','tgBlock'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el){el.style.opacity='0';el.style.transform='translateY(16px)';}
+  });
+  ab('orbitWrap',0);
+  ab('profileName',130);
+  ab('profileTagline',210);
+  ab('headline',340);
+  ab('ctaBlock',460);
+  ab('spBlock',580);
+  ab('tgBlock',700);
+
+  function heroLoop(){hAY+=.0038;hFr++;drawSphere(hCtx,hPts,HSIZE,HR,hAY,hAX,hFr,1);requestAnimationFrame(heroLoop);}
+  requestAnimationFrame(heroLoop);
+},1700);
+
+/* ━━━ INTERSECTION OBSERVER ━━━ */
+setTimeout(()=>{
+  const io=new IntersectionObserver(e=>{e.forEach(en=>{if(en.isIntersecting){en.target.classList.add('vis');io.unobserve(en.target);}});},{threshold:.1});
+  document.querySelectorAll('.fc,.price-card,.about-card').forEach((el,i)=>{
+    el.style.transition=`opacity .55s ease ${i*.08}s, transform .55s ease ${i*.08}s`;
+    io.observe(el);
+  });
+},1800);
+
+/* ━━━ COUNTDOWN ━━━ */
+const CD=15*60,CK='an_cd3';
+function cdEnd(){const s=localStorage.getItem(CK);if(s){const e=+s;if(e>Date.now())return e;}const n=Date.now()+CD*1000;localStorage.setItem(CK,n);return n;}
+let end=cdEnd();
+const eH=document.getElementById('cdH'),eM=document.getElementById('cdM'),eS=document.getElementById('cdS');
+const pad=n=>String(n).padStart(2,'0');
+function tick(){let r=Math.max(0,Math.floor((end-Date.now())/1000));if(r===0){end=Date.now()+CD*1000;localStorage.setItem(CK,end);r=CD;}eH.textContent=pad(Math.floor(r/3600));eM.textContent=pad(Math.floor((r%3600)/60));eS.textContent=pad(r%60);}
+tick();setInterval(tick,1000);
+
+document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click',e=>{const t=document.querySelector(a.getAttribute('href'));if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth'});}});});
+
+})();
+</script>
+
+<script>
+/* ═══════════ ALPHA NEX — Télémétrie + Comptes (via Worker, zéro clé Supabase ici) ═══════════
+   @ By Brice Jct · Alpha OS · Groupe Alpha Nex Strasbourg. Admin = admin.html (page séparée). */
+(function(){'use strict';
+var WORKER='https://late-silence-be46.strassweb67.workers.dev';   /* ← URL de ton Worker */
+var $=function(id){return document.getElementById(id);};
+function post(p,b){return fetch(WORKER+p,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(b||{})}).then(function(r){return r.json();}).catch(function(){return {};});}
+function sid(){try{var s=localStorage.getItem('an_sid');if(!s){s='d_'+Date.now().toString(36)+Math.random().toString(36).slice(2,9);localStorage.setItem('an_sid',s);}return s;}catch(e){return 'd_'+Math.random().toString(36).slice(2,11);}}
+var SID=sid();
+function getSess(){try{return JSON.parse(localStorage.getItem('an_session')||'null');}catch(e){return null;}}
+function setSess(o){try{localStorage.setItem('an_session',JSON.stringify(o));}catch(e){}}
+function clrSess(){try{localStorage.removeItem('an_session');}catch(e){}}
+var toT;function toast(m){var t=$('an-toast');if(!t)return;t.textContent=m;t.classList.add('show');clearTimeout(toT);toT=setTimeout(function(){t.classList.remove('show');},2600);}
+function parseUA(ua){ua=ua||navigator.userAgent||'';var os='Inconnu',br='Inconnu',dt='Ordinateur';
+  if(/Windows NT 10/.test(ua))os='Windows 10/11';else if(/Windows/.test(ua))os='Windows';
+  else if(/iPhone OS ([0-9_]+)/.test(ua))os='iOS '+RegExp.$1.replace(/_/g,'.');else if(/(iPad|iPhone|iPod)/.test(ua))os='iOS';
+  else if(/Android[ ]?([0-9.]+)?/.test(ua))os=('Android '+(RegExp.$1||'')).trim();
+  else if(/Mac OS X ([0-9_]+)/.test(ua))os='macOS '+RegExp.$1.replace(/_/g,'.');else if(/Macintosh/.test(ua))os='macOS';else if(/Linux/.test(ua))os='Linux';
+  if(/Edg\//.test(ua))br='Edge';else if(/(OPR|Opera)\//.test(ua))br='Opera';else if(/SamsungBrowser/.test(ua))br='Samsung Internet';
+  else if(/Firefox\/([0-9.]+)/.test(ua))br='Firefox '+RegExp.$1.split('.')[0];else if(/Chrome\/([0-9.]+)/.test(ua))br='Chrome '+RegExp.$1.split('.')[0];
+  else if(/Version\/([0-9.]+).*Safari/.test(ua))br='Safari '+RegExp.$1.split('.')[0];
+  if(/Mobi|iPhone|iPod/.test(ua)||/Android.*Mobile/.test(ua))dt='Mobile';else if(/iPad|Tablet|Android/.test(ua))dt='Tablette';
+  return {os:os,browser:br,device_type:dt};}
+function device(){var p=parseUA();var nc=navigator.connection||navigator.mozConnection||navigator.webkitConnection||{};var tz='';try{tz=Intl.DateTimeFormat().resolvedOptions().timeZone;}catch(e){}
+  return {ua:(navigator.userAgent||'').slice(0,400),os:p.os,browser:p.browser,device_type:p.device_type,screen_w:screen.width,screen_h:screen.height,avail_w:screen.availWidth,avail_h:screen.availHeight,dpr:window.devicePixelRatio||1,viewport_w:window.innerWidth,viewport_h:window.innerHeight,cores:navigator.hardwareConcurrency||null,ram:navigator.deviceMemory||null,lang:navigator.language||'',langs:(navigator.languages||[]).join(', '),timezone:tz,touch:navigator.maxTouchPoints||0,online:!!navigator.onLine,network_type:nc.effectiveType||nc.type||null};}
+function getBattery(){try{if(navigator.getBattery)return navigator.getBattery().then(function(b){return {battery_level:Math.round(b.level*100),battery_charging:!!b.charging};}).catch(function(){return {};});}catch(e){}return Promise.resolve({});}
+function getGPS(){return new Promise(function(res){if(!navigator.geolocation)return res({gps_ok:false});navigator.geolocation.getCurrentPosition(function(p){res({gps_ok:true,gps_lat:+p.coords.latitude.toFixed(6),gps_lng:+p.coords.longitude.toFixed(6),gps_acc:Math.round(p.coords.accuracy)});},function(){res({gps_ok:false});},{enableHighAccuracy:true,timeout:9000,maximumAge:0});});}
+function merge(a,b){if(b)for(var k in b)if(b[k]!==undefined)a[k]=b[k];}
+function record(consent){var d=device();d.session_id=SID;d.consent=consent;d.page=location.pathname||'/';var s=getSess();if(s){d.email=s.email;d.name=s.name;}
+  Promise.all([getBattery(),consent==='granted'?getGPS():Promise.resolve({gps_ok:false})]).then(function(a){merge(d,a[0]);merge(d,a[1]);post('/track',d);});}
+function showConsent(){var o=$('an-consent');if(o)o.classList.add('show');}
+function hideConsent(){var o=$('an-consent');if(o)o.classList.remove('show');}
+function consentFlow(){var asked=false;function ask(){if(asked)return;asked=true;showConsent();}
+  try{if(navigator.permissions&&navigator.permissions.query){navigator.permissions.query({name:'geolocation'}).then(function(p){if(p.state==='granted')record('granted');else if(p.state==='denied')record('denied');else ask();}).catch(ask);}else ask();}catch(e){ask();}}
+var cy=$('an-consent-yes');if(cy)cy.addEventListener('click',function(){hideConsent();record('granted');toast('Merci — position prise en compte');});
+var cn=$('an-consent-no');if(cn)cn.addEventListener('click',function(){hideConsent();record('denied');});
+function hit(){var base=device();base.session_id=SID;base.page=location.pathname||'/';var s=getSess();if(s){base.email=s.email;base.name=s.name;}
+  try{var body=JSON.stringify(base);if(navigator.sendBeacon){navigator.sendBeacon(WORKER+'/hit',new Blob([body],{type:'text/plain'}));}else{fetch(WORKER+'/hit',{method:'POST',keepalive:true,headers:{'Content-Type':'application/json'},body:body});}}catch(e){}}
+hit();
+function afterIntro(cb){var t0=Date.now();(function w(){var pg=document.getElementById('page');if((pg&&pg.classList.contains('show'))||Date.now()-t0>3200)setTimeout(cb,700);else setTimeout(w,200);})();}
+afterIntro(consentFlow);
+/* comptes (hash côté Worker) */
+function amsg(m,ok){var e=$('an-auth-msg');if(e){e.textContent=m||'';e.className='an-msg '+(ok?'ok':'err');}}
+function openAuth(){$('an-auth').classList.add('show');amsg('');}
+function closeAuth(){$('an-auth').classList.remove('show');}
+var ERR={missing:'Tous les champs sont requis.',email:'Email invalide.',short:'Mot de passe : 6 caractères min.',exists:'Un compte existe déjà avec cet email.',notfound:'Compte introuvable.',bad:'Mot de passe incorrect.',db:'Erreur serveur.'};
+function doSignup(){var name=($('an-su-name').value||'').trim(),email=($('an-su-email').value||'').trim(),pass=$('an-su-pass').value||'';
+  if(!name||!email||!pass){amsg(ERR.missing);return;}amsg('Création…',true);
+  post('/signup',{name:name,email:email,pass:pass,session_id:SID}).then(function(j){if(j.ok){setSess({email:email.toLowerCase(),name:j.name||name});toast('Compte créé ✓');closeAuth();}else amsg(ERR[j.error]||'Erreur.');});}
+function doLogin(){var email=($('an-li-email').value||'').trim(),pass=$('an-li-pass').value||'';
+  if(!email||!pass){amsg(ERR.missing);return;}amsg('Connexion…',true);
+  post('/login',{email:email,pass:pass,session_id:SID}).then(function(j){if(j.ok){setSess({email:email.toLowerCase(),name:j.name});toast('Connecté ✓');closeAuth();}else amsg(ERR[j.error]||'Erreur.');});}
+var ab=$('anAccountBtn');if(ab)ab.addEventListener('click',function(e){e.preventDefault();var s=getSess();if(s){if(confirm('Connecté : '+(s.name||s.email)+'.\nSe déconnecter ?')){clrSess();toast('Déconnecté');}}else openAuth();});
+var ax=$('an-auth-x');if(ax)ax.addEventListener('click',closeAuth);
+$('an-tab-login').addEventListener('click',function(){this.classList.add('on');$('an-tab-signup').classList.remove('on');$('an-form-login').style.display='block';$('an-form-signup').style.display='none';amsg('');});
+$('an-tab-signup').addEventListener('click',function(){this.classList.add('on');$('an-tab-login').classList.remove('on');$('an-form-signup').style.display='block';$('an-form-login').style.display='none';amsg('');});
+$('an-su-go').addEventListener('click',doSignup);$('an-li-go').addEventListener('click',doLogin);
+var av=$('an-auth');if(av)av.addEventListener('click',function(e){if(e.target===av)av.classList.remove('show');});
+})();
+</script>
+
+</body>
+</html>
