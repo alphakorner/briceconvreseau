@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="robots" content="noindex,nofollow"/>
+<title>Alpha Nex — Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Cinzel:wght@600;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" defer></script>
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{--gold:#c9a84c;--gold-l:#f0c060;--gold-d:#8a6a20}
+html,body{background:#050505;color:#fff;font-family:'Inter',sans-serif;min-height:100vh}
+@keyframes shimmer{0%{background-position:200%}100%{background-position:-200%}}
+@keyframes anFade{from{opacity:0}to{opacity:1}}
+@keyframes anPop{0%{opacity:0;transform:scale(.94)}100%{opacity:1;transform:scale(1)}}
+.lock{position:fixed;inset:0;z-index:200;display:flex;align-items:center;justify-content:center;padding:22px;background:rgba(0,0,0,.94);backdrop-filter:blur(16px)}
+.lock.hide{display:none}
+.card{width:100%;max-width:360px;background:linear-gradient(160deg,#0c0700,#070707 55%,#0c0700);border:1.5px solid var(--gold-d);border-radius:18px;padding:26px 22px;box-shadow:0 0 60px rgba(201,168,76,.16);animation:anPop .42s cubic-bezier(.34,1.56,.64,1);position:relative;text-align:center}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+.ic{width:56px;height:56px;margin:0 auto 12px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.3);font-size:26px}
+.ct{font-family:'Cinzel',serif;font-size:17px;font-weight:700;margin-bottom:14px}
+.card input{width:100%;padding:13px;background:rgba(255,255,255,.03);border:1.5px solid rgba(201,168,76,.2);border-radius:10px;color:#fff;font-size:15px;text-align:center;letter-spacing:2px;font-family:inherit;outline:none;margin-bottom:12px}
+.card input:focus{border-color:var(--gold)}
+.b-gold{width:100%;padding:14px;border:none;border-radius:11px;font-size:14px;font-weight:800;cursor:pointer;font-family:inherit;background:linear-gradient(90deg,var(--gold-d),var(--gold-l),var(--gold-d));background-size:200%;animation:shimmer 2.6s linear infinite;color:#000}
+.msg{font-size:12px;margin-top:10px;min-height:14px;color:#ff9a9a}
+.wrap{display:flex;flex-direction:column;min-height:100vh}
+.ph{position:sticky;top:0;z-index:10;height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 16px;background:rgba(5,5,5,.96);backdrop-filter:blur(16px);border-bottom:1px solid rgba(201,168,76,.12)}
+.ph b{font-family:'Cinzel',serif;font-size:14px;letter-spacing:1px;background:linear-gradient(135deg,#c9a84c,#f5d07a);-webkit-background-clip:text;background-clip:text;color:transparent}
+.ph a{font-size:12px;border:1px solid rgba(255,255,255,.15);border-radius:20px;padding:6px 12px;color:rgba(255,255,255,.55);text-decoration:none}
+.kpi{display:flex;gap:8px;margin:14px 16px 0}
+.kpi>div{flex:1;background:rgba(255,255,255,.025);border:1px solid rgba(201,168,76,.14);border-radius:12px;padding:12px;text-align:center}
+.kpi .n{font-size:23px;font-weight:900;color:var(--gold-l)}.kpi .l{font-size:9px;color:rgba(255,255,255,.45);text-transform:uppercase;letter-spacing:.5px;margin-top:3px}
+.ptabs{display:flex;gap:6px;margin:12px 16px 0}
+.ptab{flex:1;padding:10px;border:1px solid rgba(201,168,76,.18);background:none;color:rgba(255,255,255,.55);font-size:12.5px;font-weight:700;border-radius:9px;cursor:pointer;font-family:inherit}
+.ptab.on{background:rgba(201,168,76,.16);color:var(--gold-l);border-color:var(--gold-d)}
+.search{margin:12px 16px 0}.search input{width:100%;padding:11px 14px;background:rgba(255,255,255,.04);border:1px solid rgba(201,168,76,.16);border-radius:11px;color:#fff;font-size:13px;font-family:inherit;outline:none}
+.list{flex:1;padding:12px 16px 8px}
+.row{display:flex;align-items:center;gap:12px;background:rgba(255,255,255,.025);border:1px solid rgba(201,168,76,.13);border-radius:12px;padding:11px 12px;margin-bottom:9px;cursor:pointer;transition:.2s}
+.row:hover{border-color:rgba(201,168,76,.4);background:rgba(201,168,76,.04)}
+.av{width:42px;height:42px;flex-shrink:0;border-radius:11px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,rgba(201,168,76,.16),rgba(201,168,76,.03));border:1px solid rgba(201,168,76,.2);font-size:15px;font-weight:800;color:var(--gold-l)}
+.rm{flex:1;min-width:0}.rm .a{font-size:13px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rm .b{font-size:11px;color:rgba(255,255,255,.5);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rr{font-size:10px;color:rgba(255,255,255,.4);text-align:right;flex-shrink:0}
+.empty{text-align:center;color:rgba(255,255,255,.35);font-size:12.5px;padding:36px 10px}
+.danger{width:calc(100% - 32px);margin:0 16px 16px;padding:12px;border:1px solid rgba(220,60,60,.35);background:rgba(220,60,60,.08);color:#ff9a9a;border-radius:10px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit}
+.danger:hover{background:rgba(220,60,60,.18)}
+.fiche{position:fixed;inset:0;z-index:100;display:none;flex-direction:column;background:#070707}
+.fiche.show{display:flex;animation:anFade .3s ease}
+.fh{height:56px;flex-shrink:0;display:flex;align-items:center;gap:10px;padding:0 16px;background:rgba(7,7,7,.96);backdrop-filter:blur(16px);border-bottom:1px solid rgba(201,168,76,.12)}
+.back{background:none;border:none;color:var(--gold-l);font-size:14px;cursor:pointer;font-family:inherit}
+.fbody{flex:1;overflow-y:auto;padding:16px}
+.hero{text-align:center;padding:8px 0 16px}
+.hero .big{width:70px;height:70px;margin:0 auto 10px;border-radius:20px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,rgba(201,168,76,.2),rgba(201,168,76,.04));border:1px solid rgba(201,168,76,.3);font-size:26px;font-weight:900;color:var(--gold-l)}
+.hero h2{font-family:'Cinzel',serif;font-size:18px}.hero p{font-size:12px;color:rgba(255,255,255,.5);margin-top:3px;word-break:break-all}
+.sec{margin-top:18px}.sec .st{font-size:11px;font-weight:700;color:var(--gold-l);text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px}
+.grid{background:rgba(255,255,255,.025);border:1px solid rgba(201,168,76,.14);border-radius:14px;overflow:hidden}
+.kv{display:flex;justify-content:space-between;gap:12px;padding:11px 13px;border-bottom:1px solid rgba(255,255,255,.05);font-size:12.5px}
+.kv:last-child{border-bottom:none}.kv .k{color:rgba(255,255,255,.45);flex-shrink:0}.kv .v{text-align:right;word-break:break-word}.kv .v.gold{color:var(--gold-l);font-weight:700}
+#map{height:200px;border-radius:14px;overflow:hidden;border:1px solid rgba(201,168,76,.2);margin-top:6px;background:#111}
+.gmaps{display:flex;align-items:center;justify-content:center;gap:7px;width:100%;margin-top:10px;padding:13px;border-radius:11px;background:linear-gradient(135deg,var(--gold-l),var(--gold));color:#000;font-weight:800;font-size:13px;text-decoration:none}
+.toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(20px);z-index:300;background:rgba(20,16,4,.96);border:1px solid var(--gold-d);color:#fff;padding:12px 20px;border-radius:12px;font-size:13px;font-weight:600;opacity:0;pointer-events:none;transition:.3s}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.sig{text-align:center;font-size:10px;color:rgba(255,255,255,.22);padding:14px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="ph"><b>ALPHA NEX · ADMIN</b><a href="index.html">↩ Site</a></div>
+  <div class="kpi"><div><div class="n" id="k-cli">0</div><div class="l">Comptes</div></div><div><div class="n" id="k-vis">0</div><div class="l">Appareils</div></div><div><div class="n" id="k-cnx">0</div><div class="l">Visites</div></div></div>
+  <div class="ptabs"><button class="ptab on" id="pt-vis">🌐 Connexions</button><button class="ptab" id="pt-cli">👤 Comptes clients</button></div>
+  <div class="search"><input type="text" id="q" placeholder="Rechercher (nom, email, ville, IP…)"></div>
+  <div class="list" id="listbox"></div>
+  <button class="danger" id="delall">🗑 Tout supprimer (nettoyer)</button>
+  <div class="sig">@ By Brice Jct · Alpha OS · Groupe Alpha Nex Strasbourg</div>
+</div>
+<div class="fiche" id="fiche"><div class="fh"><button class="back" id="fiche-back">‹ Retour</button><b style="font-size:13px" id="fiche-h">Fiche</b></div><div class="fbody" id="fiche-body"></div></div>
+<div class="lock" id="lock"><div class="card"><div class="ic">🔐</div><div class="ct">Espace administrateur</div><input type="password" id="lock-pw" placeholder="Code admin"><button class="b-gold" id="lock-go">Accéder →</button><div class="msg" id="lock-msg"></div></div></div>
+<div class="toast" id="toast"></div>
+<script>
+/* ═══════════ ALPHA NEX — ADMIN (via Worker, aucune clé Supabase ici) ═══════════ */
+(function(){'use strict';
+var WORKER='https://late-silence-be46.strassweb67.workers.dev';   /* ← URL de ton Worker */
+var CODE='';
+var $=function(id){return document.getElementById(id);};var enc=encodeURIComponent;
+function post(b){return fetch(WORKER+'/admin',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(b)}).then(function(r){return r.json().then(function(j){return {status:r.status,j:j};});});}
+function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+function inits(s){s=(s||'?').trim();var p=s.split(/[ @._-]+/);return ((p[0]||'?')[0]+(p[1]?p[1][0]:'')).toUpperCase();}
+function fdate(s){if(!s)return '—';try{var d=new Date(s);return d.toLocaleDateString('fr-FR',{day:'2-digit',month:'2-digit',year:'2-digit'})+' '+d.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});}catch(e){return String(s);}}
+var toT;function toast(m){var t=$('toast');t.textContent=m;t.classList.add('show');clearTimeout(toT);toT=setTimeout(function(){t.classList.remove('show');},2600);}
+var ADM={tab:'vis',vis:[],cli:[],cnx:0,q:''},anMap=null;
+function load(){post({code:CODE,action:'list'}).then(function(res){var j=res.j;ADM.vis=j.visiteurs||[];ADM.cli=j.clients||[];ADM.cnx=j.cnx||0;$('k-vis').textContent=ADM.vis.length;$('k-cli').textContent=ADM.cli.length;$('k-cnx').textContent=ADM.cnx;render();});}
+function render(){var box=$('listbox'),q=(ADM.q||'').toLowerCase(),arr=ADM.tab==='vis'?ADM.vis:ADM.cli;
+  var f=arr.filter(function(r){if(!q)return true;return [r.name,r.email,r.ip,r.ip_city,r.ip_country,r.os,r.browser,r.session_id].join(' ').toLowerCase().indexOf(q)>=0;});
+  if(!f.length){box.innerHTML='<div class="empty">Aucun résultat.</div>';return;}
+  box.innerHTML=f.map(function(r,i){var ic,a,b,rr;
+    if(ADM.tab==='cli'){ic=inits(r.name||r.email);a=esc(r.name||'—');b=esc(r.email||'');rr=fdate(r.last_login);}
+    else{ic=r.gps_ok?'📍':'🌐';a=esc(r.name||(r.ip_city?(r.ip_city+', '+(r.ip_country||'')):'Visiteur'));b=esc((r.os||'?')+' · '+(r.browser||'?')+' · '+(r.ip||'IP ?'));rr=fdate(r.last_seen);}
+    return '<div class="row" data-i="'+i+'"><div class="av">'+ic+'</div><div class="rm"><div class="a">'+a+'</div><div class="b">'+b+'</div></div><div class="rr">'+rr+'</div></div>';}).join('');
+  Array.prototype.forEach.call(box.querySelectorAll('.row'),function(el){el.addEventListener('click',function(){openFiche(f[+el.getAttribute('data-i')],ADM.tab);});});}
+function sec(t,rows){return '<div class="sec"><div class="st">'+t+'</div><div class="grid">'+rows.filter(Boolean).join('')+'</div></div>';}
+function kv(k,v,gold){if(v===null||v===undefined||v===''||v===false)v='—';return '<div class="kv"><span class="k">'+esc(k)+'</span><span class="v'+(gold?' gold':'')+'">'+esc(String(v))+'</span></div>';}
+function openFiche(r,type){
+  $('fiche-h').textContent=type==='cli'?'Fiche client':'Fiche connexion';
+  var title=r.name||r.email||(r.ip_city?(r.ip_city+', '+(r.ip_country||'')):'Visiteur'),sub=r.email||r.session_id||'';
+  var lat=r.gps_ok?r.gps_lat:r.ip_lat,lng=r.gps_ok?r.gps_lng:r.ip_lng,gsrc=r.gps_ok?'GPS appareil (précis)':'IP (approx.)';
+  var html='<div class="hero"><div class="big">'+(type==='cli'?inits(title):(r.gps_ok?'📍':'🌐'))+'</div><h2>'+esc(title)+'</h2><p>'+esc(sub)+'</p></div>';
+  if(type==='cli')html+=sec('Identité',[kv('Nom',r.name),kv('Email',r.email),kv('Créé le',fdate(r.created_at)),kv('Dernière connexion',fdate(r.last_login))]);
+  html+=sec('Géolocalisation',[kv('Source prioritaire',gsrc,true),kv('GPS appareil',r.gps_ok?(r.gps_lat+', '+r.gps_lng+' (±'+(r.gps_acc||'?')+' m)'):'non autorisé'),kv('Position IP',((r.ip_city||'?')+' '+(r.ip_region||'')+' '+(r.ip_country||'')).trim()),kv('Fournisseur (FAI)',r.isp),kv('Adresse IP',r.ip)]);
+  html+='<div id="map"></div>';
+  if(lat&&lng)html+='<a class="gmaps" id="gm" target="_blank" rel="noopener">🗺️ Ouvrir dans Google Maps</a>';
+  var batt=(r.battery_level!=null)?(r.battery_level+'%'+(r.battery_charging?' ⚡ en charge':'')):'non communiqué';
+  html+=sec('Appareil',[kv('Type',r.device_type),kv('OS',r.os),kv('Navigateur',r.browser),kv('Écran',r.screen_w?(r.screen_w+' × '+r.screen_h+' px'):null),kv('Zone utile',r.avail_w?(r.avail_w+' × '+r.avail_h+' px'):null),kv('Densité (DPR)',r.dpr?('×'+r.dpr):null),kv('Fenêtre',r.viewport_w?(r.viewport_w+' × '+r.viewport_h+' px'):null),kv('Cœurs CPU',r.cores),kv('Mémoire RAM',r.ram?(r.ram+' Go'):null),kv('Batterie',batt),kv('Réseau',r.network_type),kv('Tactile',r.touch?(r.touch+' points'):'non'),kv('Langue',r.lang),kv('Fuseau',r.timezone),kv('En ligne',r.online?'oui':'non'),kv('Consentement géoloc',r.consent)]);
+  html+='<div class="sec"><div class="st">Historique connexions</div><div class="grid" id="hist"><div class="kv"><span class="k">Chargement…</span><span class="v"></span></div></div></div>';
+  $('fiche-body').innerHTML=html;
+  drawMap(lat,lng,gsrc);
+  if(lat&&lng){var gm=$('gm');if(gm)gm.href='https://www.google.com/maps?q='+lat+','+lng;}
+  post({code:CODE,action:'history',key:r.email?'email':'session',value:r.email||r.session_id||''}).then(function(res){var rows=res.j.rows||[];var hb=$('hist');if(!hb)return;
+    if(!rows.length){hb.innerHTML='<div class="kv"><span class="k">—</span><span class="v">aucune</span></div>';return;}
+    hb.innerHTML=rows.map(function(x){return '<div class="kv"><span class="k">'+fdate(x.created_at)+' · '+esc(x.kind||'')+'</span><span class="v">'+esc(((x.ip_city||x.ip||'')+' '+(x.ip_country||'')).trim()||'—')+'</span></div>';}).join('');});
+  $('fiche').classList.add('show');}
+function drawMap(lat,lng,src){var el=$('map');if(!el)return;if(!lat||!lng){el.style.display='none';return;}el.style.display='block';
+  if(!window.L){el.innerHTML='<div style="padding:22px;text-align:center;color:#999;font-size:12px">Carte indisponible<br>'+lat+', '+lng+'</div>';return;}
+  try{if(anMap){anMap.remove();anMap=null;}el.innerHTML='';anMap=L.map(el,{attributionControl:false}).setView([lat,lng],/GPS/.test(src)?15:10);
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',{maxZoom:19}).addTo(anMap);
+    L.circleMarker([lat,lng],{radius:9,color:'#f0c060',fillColor:'#c9a84c',fillOpacity:.85,weight:2}).addTo(anMap).bindPopup(src);
+    setTimeout(function(){try{anMap.invalidateSize();}catch(e){}},220);}catch(e){}}
+$('pt-vis').addEventListener('click',function(){ADM.tab='vis';this.classList.add('on');$('pt-cli').classList.remove('on');render();});
+$('pt-cli').addEventListener('click',function(){ADM.tab='cli';this.classList.add('on');$('pt-vis').classList.remove('on');render();});
+$('q').addEventListener('input',function(){ADM.q=this.value;render();});
+$('delall').addEventListener('click',function(){var isCli=ADM.tab==='cli';if(!confirm(isCli?'Supprimer TOUS les comptes clients ? (irréversible)':'Supprimer TOUTES les connexions + historique ? (irréversible)'))return;
+  post({code:CODE,action:'delete',what:isCli?'clients':'connexions'}).then(function(){toast('Supprimé');setTimeout(load,400);});});
+$('fiche-back').addEventListener('click',function(){$('fiche').classList.remove('show');if(anMap){try{anMap.remove();}catch(e){}anMap=null;}});
+function tryLock(){var v=$('lock-pw').value||'';post({code:v,action:'list'}).then(function(res){if(res.status===403){$('lock-msg').textContent='Code incorrect.';return;}CODE=v;$('lock').classList.add('hide');var j=res.j;ADM.vis=j.visiteurs||[];ADM.cli=j.clients||[];ADM.cnx=j.cnx||0;$('k-vis').textContent=ADM.vis.length;$('k-cli').textContent=ADM.cli.length;$('k-cnx').textContent=ADM.cnx;render();}).catch(function(){$('lock-msg').textContent='Worker injoignable.';});}
+$('lock-go').addEventListener('click',tryLock);
+$('lock-pw').addEventListener('keydown',function(e){if(e.key==='Enter')tryLock();});
+$('lock-pw').focus();
+})();
+</script>
+</body>
+</html>
