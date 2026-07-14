@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Mon compte — Alpha Nex | Accès Formation 10€</title>
+<meta name="robots" content="noindex"/>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Cinzel:wght@600;700;900&family=Newsreader:wght@500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{--gold:#ff2e3e;--gold-l:#ff5d6b;--gold-d:#8a1420;--bg:#000;--r:12px}
+html,body{background:#000;color:#fff;font-family:'Inter',sans-serif;min-height:100vh;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.04;mix-blend-mode:overlay;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+#cv{position:fixed;inset:0;z-index:0;pointer-events:none}
+.wrap{position:relative;z-index:2;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:28px 18px}
+.brand{text-align:center;margin-bottom:20px}
+.brand-t{font-family:'Cinzel',serif;font-size:22px;font-weight:900;letter-spacing:2px;background:linear-gradient(135deg,#ff2e3e,#ff8a94,#b8902a);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.brand-s{font-size:10px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.4);margin-top:4px}
+.card{width:100%;max-width:400px;background:linear-gradient(160deg,#0c0700,#070707 55%,#0c0700);border:1.5px solid var(--gold-d);border-radius:18px;padding:24px 20px;box-shadow:0 0 60px rgba(255,46,62,.13),0 20px 60px rgba(0,0,0,.6);position:relative;overflow:hidden}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+.badge{display:inline-flex;align-items:center;gap:6px;background:rgba(255,46,62,.09);border:1px solid rgba(255,46,62,.3);border-radius:20px;padding:5px 13px;font-size:10px;font-weight:700;color:var(--gold-l);letter-spacing:1px;text-transform:uppercase;margin-bottom:14px}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--gold-l);box-shadow:0 0 6px var(--gold-l);animation:p 1.4s ease-in-out infinite}
+@keyframes p{0%,100%{opacity:.5;transform:scale(.8)}50%{opacity:1;transform:scale(1.2)}}
+.tabs{display:flex;gap:6px;background:rgba(255,255,255,.03);border:1px solid rgba(255,46,62,.14);border-radius:12px;padding:4px;margin-bottom:18px}
+.tab{flex:1;padding:10px;border:none;background:none;color:rgba(255,255,255,.55);font-size:12.5px;font-weight:700;border-radius:9px;cursor:pointer;transition:all .25s;font-family:inherit}
+.tab.on{background:linear-gradient(135deg,rgba(255,46,62,.22),rgba(255,46,62,.08));color:var(--gold-l);box-shadow:0 2px 10px rgba(0,0,0,.4)}
+.field{margin-bottom:12px}
+.field label{display:block;font-size:11px;font-weight:600;color:rgba(255,255,255,.5);margin-bottom:5px;letter-spacing:.4px}
+.field input{width:100%;padding:13px 14px;background:rgba(255,255,255,.03);border:1.5px solid rgba(255,46,62,.16);border-radius:10px;color:#fff;font-size:14px;font-family:inherit;transition:border-color .25s,box-shadow .25s;outline:none}
+.field input:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(255,46,62,.12)}
+.field input::placeholder{color:rgba(255,255,255,.25)}
+.row2{display:flex;gap:10px}
+.row2 .field{flex:1}
+.hint{font-size:11px;color:var(--gold-l);text-align:center;margin:6px 0 14px;display:flex;align-items:center;justify-content:center;gap:6px}
+.submit{width:100%;padding:15px;border:none;border-radius:11px;background:linear-gradient(90deg,var(--gold-d),var(--gold-l),var(--gold-d));background-size:200%;animation:sh 2.6s linear infinite;font-size:15px;font-weight:800;color:#000;cursor:pointer;letter-spacing:.3px;font-family:inherit;box-shadow:0 0 24px rgba(245,208,122,.3);transition:transform .15s}
+.submit:hover{transform:translateY(-1px)}
+.submit:active{transform:scale(.99)}
+.submit:disabled{opacity:.6;cursor:wait;animation:none}
+@keyframes sh{0%{background-position:200%}100%{background-position:-200%}}
+.msg{margin-top:14px;font-size:12.5px;line-height:1.5;text-align:center;padding:11px 12px;border-radius:10px;display:none}
+.msg.show{display:block;animation:fu .3s ease}
+.msg.err{background:rgba(220,60,60,.1);border:1px solid rgba(220,60,60,.35);color:#ff9a9a}
+.msg.ok{background:rgba(60,200,120,.08);border:1px solid rgba(60,200,120,.3);color:#8fe0b0}
+.msg.info{background:rgba(255,46,62,.08);border:1px solid rgba(255,46,62,.28);color:var(--gold-l)}
+@keyframes fu{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.foot{margin-top:18px;font-size:10.5px;color:rgba(255,255,255,.3);text-align:center;line-height:1.6}
+.foot a{color:var(--gold-l);text-decoration:none}
+.price-tag{display:inline-block;background:var(--gold);color:#000;font-weight:800;font-size:11px;padding:2px 9px;border-radius:20px;margin-left:4px}
+.back{position:fixed;top:16px;left:16px;z-index:5;font-size:12px;color:rgba(255,255,255,.5);text-decoration:none;display:flex;align-items:center;gap:5px}
+.back:hover{color:var(--gold-l)}
+.hidden{display:none!important}
+.spin{width:16px;height:16px;border:2px solid rgba(0,0,0,.3);border-top-color:#000;border-radius:50%;display:inline-block;animation:sp .7s linear infinite;vertical-align:-3px;margin-right:6px}
+@keyframes sp{to{transform:rotate(360deg)}}
+.ap-name{font-family:'Newsreader',Georgia,'Times New Roman',serif;font-weight:600;letter-spacing:.2px;background:linear-gradient(115deg,#7a5c1c 0%,#ff2e3e 16%,#f7f1dd 32%,#ff5d6b 48%,#b8902a 64%,#e9e9ec 80%,#8a1420 100%);background-size:220% auto;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;animation:apShine 5.5s linear infinite;text-decoration:none;white-space:nowrap;filter:drop-shadow(0 1px 1px rgba(0,0,0,.45))}
+@keyframes apShine{to{background-position:220% center}}
+@media (prefers-reduced-motion:reduce){.ap-name{animation:none}}
+</style>
+<style>.ap-name,.brand-logo{background:linear-gradient(100deg,#8a1420 0%,#ff2e3e 20%,#ffffff 38%,#ff5d6b 48%,#ffffff 60%,#ff2e3e 78%,#8a1420 100%)!important;background-size:250% auto!important;-webkit-background-clip:text!important;background-clip:text!important;-webkit-text-fill-color:transparent!important;color:transparent!important;animation:metalShine 4s linear infinite!important}@keyframes metalShine{0%{background-position:0% center}100%{background-position:250% center}}</style>
+<style id="cgv-styles">
+/* ═══════════ ALPHA NEX — Conditions Générales (modale + case animée) ═══════════ */
+/* Bouton d'ouverture (footer) */
+.cgv-open{display:inline-flex;align-items:center;gap:8px;background:rgba(255,46,62,.06);border:1px solid rgba(255,46,62,.28);color:var(--gold-l);font-family:inherit;font-size:11px;font-weight:600;letter-spacing:.4px;padding:9px 17px;border-radius:22px;cursor:pointer;transition:border-color .25s,box-shadow .25s,transform .2s,background .25s}
+.cgv-open:hover{border-color:var(--gold);background:rgba(255,46,62,.1);box-shadow:0 0 20px rgba(255,46,62,.25);transform:translateY(-1px)}
+.cgv-open svg{width:14px;height:14px;flex-shrink:0}
+
+/* Overlay + carte */
+.cgv-ov{position:fixed;inset:0;z-index:100050;display:none;align-items:center;justify-content:center;padding:18px;background:rgba(0,0,0,.9);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);}
+.cgv-ov.show{display:flex;animation:cgvFade .3s ease}
+@keyframes cgvFade{from{opacity:0}to{opacity:1}}
+@keyframes cgvPopIn{0%{opacity:0;transform:scale(.94) translateY(10px)}100%{opacity:1;transform:scale(1) translateY(0)}}
+@keyframes cgvShimmer{0%{background-position:200%}100%{background-position:-200%}}
+.cgv-card{width:100%;max-width:560px;max-height:88vh;display:flex;flex-direction:column;position:relative;overflow:hidden;background:linear-gradient(160deg,#0c0700,#070707 55%,#0c0700);border:1.5px solid var(--gold-d);border-radius:20px;box-shadow:0 0 70px rgba(255,46,62,.16),0 24px 70px rgba(0,0,0,.7);animation:cgvPopIn .45s cubic-bezier(.34,1.56,.64,1)}
+.cgv-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent);z-index:3}
+.cgv-x{position:absolute;top:12px;right:14px;z-index:4;width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.6);font-size:15px;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;transition:.25s}
+.cgv-x:hover{border-color:var(--gold);color:var(--gold-l);background:rgba(255,46,62,.12);transform:rotate(90deg)}
+.cgv-head{flex-shrink:0;text-align:center;padding:26px 22px 15px;border-bottom:1px solid rgba(255,46,62,.1)}
+.cgv-ic{width:52px;height:52px;margin:0 auto 10px;border-radius:15px;display:flex;align-items:center;justify-content:center;background:rgba(255,46,62,.1);border:1px solid rgba(255,46,62,.3);font-size:24px;box-shadow:0 0 24px rgba(255,46,62,.18)}
+.cgv-title{font-family:'Cinzel',serif;font-size:19px;font-weight:700;color:#fff;letter-spacing:.5px}
+.cgv-sub{font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--gold-l);margin-top:5px}
+.cgv-body{flex:1;overflow-y:auto;overflow-x:hidden;padding:20px 22px 6px;scrollbar-width:thin;scrollbar-color:var(--gold-d) transparent}
+.cgv-body::-webkit-scrollbar{width:8px}
+.cgv-body::-webkit-scrollbar-thumb{background:linear-gradient(var(--gold-d),var(--gold));border-radius:8px}
+.cgv-body::-webkit-scrollbar-track{background:rgba(255,255,255,.03)}
+.cgv-sec{margin-bottom:19px}
+.cgv-sec h3{font-size:13px;font-weight:800;color:var(--gold-l);margin-bottom:7px;display:flex;gap:9px;align-items:baseline}
+.cgv-sec h3 .num{font-family:'Cinzel',serif;font-size:11px;color:var(--gold);opacity:.75;flex-shrink:0;min-width:20px}
+.cgv-sec p,.cgv-sec li{font-size:12px;line-height:1.62;color:rgba(255,255,255,.62)}
+.cgv-sec p{margin-bottom:6px}
+.cgv-sec strong{color:rgba(255,255,255,.86);font-weight:700}
+.cgv-sec ul{list-style:none;display:flex;flex-direction:column;gap:5px;margin:7px 0}
+.cgv-sec li{padding-left:16px;position:relative}
+.cgv-sec li::before{content:'▸';position:absolute;left:0;top:1px;color:var(--gold);font-size:10px}
+.cgv-note{font-size:10.5px;color:rgba(255,255,255,.34);line-height:1.55;border-top:1px solid rgba(255,255,255,.07);padding-top:13px;margin:2px 0 6px}
+.cgv-close{width:100%;margin:14px 0 6px;padding:16px;border:none;border-radius:12px;cursor:pointer;font-family:inherit;font-size:15px;font-weight:800;color:#fff;letter-spacing:.4px;background:linear-gradient(90deg,#8a1420,#ff2e3e,#8a1420);background-size:200%;box-shadow:0 10px 30px rgba(255,46,62,.32);transition:transform .18s,box-shadow .25s;animation:cgvShimmer 2.8s linear infinite}
+.cgv-close:hover{transform:translateY(-2px);box-shadow:0 14px 42px rgba(255,46,62,.46)}
+.cgv-close:active{transform:scale(.99)}
+.cgv-close::before{content:'✕ ';font-weight:900;opacity:.85}
+
+/* Case à cocher animée "squelette" */
+.cgv-check{display:flex;align-items:flex-start;gap:11px;cursor:pointer;user-select:none;padding:12px 13px;border-radius:12px;margin:6px 0 14px;background:rgba(255,46,62,.04);border:1.5px solid rgba(255,46,62,.16);transition:border-color .25s,background .25s,transform .2s}
+.cgv-check:hover{border-color:rgba(255,46,62,.34);background:rgba(255,46,62,.07)}
+.cgv-check.on{border-color:var(--gold);background:rgba(255,46,62,.09)}
+.cgv-check.err{animation:cgvShake .4s cubic-bezier(.36,.07,.19,.97)}
+@keyframes cgvShake{10%,90%{transform:translateX(-1px)}20%,80%{transform:translateX(2px)}30%,50%,70%{transform:translateX(-4px)}40%,60%{transform:translateX(4px)}}
+.cgv-check input{position:absolute;opacity:0;width:0;height:0;pointer-events:none}
+.cgv-box{position:relative;flex-shrink:0;width:24px;height:24px;border-radius:7px;background:rgba(255,255,255,.03);border:2px solid var(--gold-d);display:flex;align-items:center;justify-content:center;overflow:hidden;transition:border-color .25s,background .3s;animation:cgvSkel 1.8s ease-in-out infinite}
+.cgv-box::after{content:'';position:absolute;inset:0;background:linear-gradient(110deg,transparent 30%,rgba(255,93,107,.4) 50%,transparent 70%);background-size:220% 100%;animation:cgvShine 1.8s linear infinite}
+.cgv-box svg{width:16px;height:16px;fill:none;stroke:#fff;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:26;stroke-dashoffset:26;position:relative;z-index:1;transition:stroke-dashoffset .38s cubic-bezier(.6,0,.3,1) .05s}
+.cgv-check.on .cgv-box{background:linear-gradient(135deg,var(--gold),var(--gold-d));border-color:var(--gold);animation:cgvPop .42s cubic-bezier(.34,1.7,.5,1)}
+.cgv-check.on .cgv-box::after{opacity:0;animation:none}
+.cgv-check.on .cgv-box svg{stroke-dashoffset:0}
+.cgv-lbl{font-size:11.5px;line-height:1.5;color:rgba(255,255,255,.66);padding-top:2px}
+.cgv-lbl a{color:var(--gold-l);font-weight:700;text-decoration:underline;text-underline-offset:2px;cursor:pointer}
+@keyframes cgvSkel{0%,100%{transform:scale(1)}50%{transform:scale(1.09)}}
+@keyframes cgvShine{to{background-position:-220% 0}}
+@keyframes cgvPop{0%{transform:scale(.78)}55%{transform:scale(1.16)}100%{transform:scale(1)}}
+@media (prefers-reduced-motion:reduce){.cgv-box,.cgv-box::after,.cgv-close{animation:none}.cgv-check.err{animation:none}}
+</style>
+
+<style id="an-perf">#cv{transform:translateZ(0)}.cgv-body{-webkit-overflow-scrolling:touch;overscroll-behavior:contain}</style>
+</head>
+<body>
+<canvas id="cv"></canvas>
+<a href="index.html" class="back">← Retour</a>
+
+<div class="wrap">
+  <div class="brand">
+    <div class="ap-name" style="font-size:15px;margin-bottom:7px">Alpha Protocol</div>
+    <div class="brand-t">ALPHA NEX</div>
+    <div class="brand-s">Formation privée · Strasbourg</div>
+  </div>
+
+  <div class="card">
+    <span class="badge"><span class="dot"></span> Accès formation <span class="price-tag">10€ / mois</span></span>
+
+    <div class="tabs">
+      <button class="tab on" id="tabSignup">Créer un compte</button>
+      <button class="tab" id="tabLogin">J'ai déjà un compte</button>
+    </div>
+
+    <!-- INSCRIPTION -->
+    <form id="formSignup" autocomplete="on">
+      <div class="row2">
+        <div class="field"><label>Prénom</label><input type="text" id="su_first" placeholder="Jean" required></div>
+        <div class="field"><label>Nom</label><input type="text" id="su_last" placeholder="Dupont" required></div>
+      </div>
+      <div class="field"><label>Email</label><input type="email" id="su_email" placeholder="jean@email.com" required></div>
+      <div class="row2">
+        <div class="field"><label>Téléphone</label><input type="tel" id="su_phone" placeholder="06 12 34 56 78" required></div>
+        <div class="field"><label>Code postal</label><input type="text" id="su_zip" placeholder="67000" inputmode="numeric" required></div>
+      </div>
+      <div class="field"><label>Mot de passe</label><input type="password" id="su_pass" placeholder="6 caractères min." required></div>
+      <div class="hint">⚡ Inscription en 30 secondes — accès immédiat au paiement</div>
+      <label class="cgv-check" id="su_cgv_wrap">
+        <input type="checkbox" id="su_cgv">
+        <span class="cgv-box"><svg viewBox="0 0 24 24"><path d="M4 12.5l5 5L20 6.5"/></svg></span>
+        <span class="cgv-lbl">J'ai lu et j'accepte les <a class="cgv-trigger">Conditions Générales de Vente &amp; d'Utilisation</a>.</span>
+      </label>
+      <button type="submit" class="submit" id="btnSignup">Créer mon compte &amp; continuer →</button>
+    </form>
+
+    <!-- CONNEXION -->
+    <form id="formLogin" class="hidden" autocomplete="on">
+      <div class="field"><label>Email</label><input type="email" id="li_email" placeholder="jean@email.com" required></div>
+      <div class="field"><label>Mot de passe</label><input type="password" id="li_pass" placeholder="••••••••" required></div>
+      <div class="hint">🔒 Connexion sécurisée</div>
+      <button type="submit" class="submit" id="btnLogin">Me connecter &amp; continuer →</button>
+    </form>
+
+    <div class="field" style="margin-top:2px">
+      <label>🎟️ Code privilège (optionnel)</label>
+      <input type="text" id="privCode" placeholder="Accès direct sans paiement" autocomplete="off">
+    </div>
+
+    <div class="msg" id="msg"></div>
+  </div>
+
+  <p class="foot">
+    En continuant tu seras redirigé vers le paiement sécurisé <b style="color:var(--gold-l)">Revolut</b> (10€).<br>
+    Tes coordonnées sont enregistrées sur ton espace client privé.
+  </p>
+  <button class="cgv-open cgv-trigger" type="button" style="margin:14px auto 0">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2h9l5 5v14a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1z"/><path d="M14 2v6h6"/><path d="M8.5 13h7M8.5 16.5h7"/></svg>
+    Conditions Générales de Vente &amp; d'Utilisation
+  </button>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+(function(){'use strict';
+
+/* ══════════════════════════════════════════════════════════
+   CONFIG  — 3 valeurs à vérifier
+   ══════════════════════════════════════════════════════════ */
+/* Supabase : pré-rempli avec TON projet (clé publiable = OK côté client) */
+var SUPABASE_URL = "https://pjvukiihkaqxrcqlrkpw.supabase.co";
+var SUPABASE_ANON = "sb_publishable_h9IZ8_vABurU1544_D0q_A_79LGsqu1";
+
+/* Cloudflare Worker qui crée la commande Revolut (voir revolut-worker.js).
+   ⚠️ Remplace par l'URL de TON worker déployé, ex : https://alpha-pay.strassweb67.workers.dev */
+var WORKER_URL = "https://late-silence-be46.strassweb67.workers.dev";
+
+/* Lien de paiement Revolut (fonctionne DÈS MAINTENANT, même sans worker).
+   Pour débloquer la vérification auto, déploie le worker (voir plus bas). */
+var REVOLUT_CHECKOUT = "https://checkout.revolut.com/pay/ca92a8d1-e672-4998-803b-da2550320cd5";
+
+/* Page débloquée après paiement */
+var FORMATIONS_URL = "formations.html";
+/* ══════════════════════════════════════════════════════════ */
+
+var sb=null;
+try{ sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON); }catch(e){}
+
+var $=function(id){return document.getElementById(id);};
+function show(kind,html){var m=$('msg');m.className='msg show '+kind;m.innerHTML=html;}
+function hide(){var m=$('msg');m.className='msg';}
+function busy(btn,on,label){btn.disabled=on;btn.innerHTML=on?('<span class="spin"></span>'+(label||'Un instant…')):btn.dataset.txt;}
+
+/* Onglets */
+$('tabSignup').addEventListener('click',function(){
+  $('tabSignup').classList.add('on');$('tabLogin').classList.remove('on');
+  $('formSignup').classList.remove('hidden');$('formLogin').classList.add('hidden');hide();
+});
+$('tabLogin').addEventListener('click',function(){
+  $('tabLogin').classList.add('on');$('tabSignup').classList.remove('on');
+  $('formLogin').classList.remove('hidden');$('formSignup').classList.add('hidden');hide();
+});
+$('btnSignup').dataset.txt=$('btnSignup').innerHTML;
+$('btnLogin').dataset.txt=$('btnLogin').innerHTML;
+
+function emailOk(e){return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e);}
+function friendlyErr(m){
+  m=(m||'')+'';
+  if(/rate limit/i.test(m)) return "Trop d'inscriptions d'un coup. ⚠️ Désactive « Confirm email » dans Supabase (Authentication → Email) pour supprimer ça.";
+  if(/not confirmed|confirm/i.test(m)) return "⚠️ Ce compte attend une confirmation email. Désactive « Confirm email » dans Supabase pour un accès instantané.";
+  if(/invalid|credential/i.test(m)) return "Email ou mot de passe incorrect.";
+  return m;
+}
+
+/* Après compte / connexion → paiement Revolut sécurisé via le Worker */
+function goToPayment(){
+  show('info','<span class="spin" style="border-top-color:var(--gold-l);border-color:rgba(255,46,62,.3)"></span> Préparation du paiement sécurisé…');
+  /* PRIORITÉ : ton lien de paiement Revolut (marche sans clé secrète).
+     Paie avec le MÊME email que ton compte pour l'accès auto. */
+  if(REVOLUT_CHECKOUT && !/VOTRE-LIEN/i.test(REVOLUT_CHECKOUT)){ try{localStorage.setItem('an_paid_pending',String(Date.now()));}catch(e){} window.location.href=REVOLUT_CHECKOUT; return; }
+  /* Sinon : création de commande via le worker (nécessite la clé Revolut Merchant sk_...). */
+  if(/VOTRE-WORKER/i.test(WORKER_URL)){
+    show('err','⚠️ Paiement non configuré (ni lien Revolut, ni worker).');
+    return;
+  }
+  sb.auth.getSession().then(function(r){
+    var session=r&&r.data&&r.data.session;
+    if(!session){ show('err','Session introuvable, reconnecte-toi.'); return; }
+    return fetch(WORKER_URL.replace(/\/$/,'')+'/create-order',{
+      method:'POST',
+      headers:{'Authorization':'Bearer '+session.access_token,'Content-Type':'application/json'}
+    }).then(function(res){return res.json();}).then(function(j){
+      if(j&&j.checkout_url){ window.location.href=j.checkout_url; }
+      else{ show('err','Impossible de créer le paiement.<br>'+((j&&j.error)||'Réessaie dans un instant.')); }
+    });
+  }).catch(function(err){ show('err','Erreur paiement : '+err.message); });
+}
+
+/* Après compte/connexion : code privilège saisi ? -> on le vérifie ; sinon -> paiement */
+function afterAuth(){
+  var code=((document.getElementById('privCode')||{}).value||'').trim();
+  if(code){ redeemPrivilege(code); return; }
+  /* Paiement UNIQUE : déjà payé -> espace client direct ; sinon -> paiement. */
+  if(/VOTRE-WORKER/i.test(WORKER_URL)){ goToPayment(); return; }
+  show('info','<span class="spin" style="border-top-color:var(--gold-l);border-color:rgba(255,46,62,.3)"></span> Vérification de ton accès…');
+  sb.auth.getSession().then(function(r){
+    var s=r&&r.data&&r.data.session; if(!s){ goToPayment(); return; }
+    return fetch(WORKER_URL.replace(/\/$/,'')+'/access',{headers:{'Authorization':'Bearer '+s.access_token}})
+      .then(function(res){return res.json();}).then(function(j){
+        if(j&&j.paid){ window.location.href=FORMATIONS_URL; }  /* déjà payé -> espace client */
+        else { goToPayment(); }                                /* pas payé -> paiement */
+      });
+  }).catch(function(){ goToPayment(); });
+}
+
+/* Code privilège -> vérifié par le worker (Treza670 / promoexclusive) -> accès direct */
+function redeemPrivilege(code){
+  show('info','<span class="spin" style="border-top-color:var(--gold-l);border-color:rgba(255,46,62,.3)"></span> Vérification du code…');
+  if(/VOTRE-WORKER/i.test(WORKER_URL)){
+    show('err','⚠️ Les codes privilège nécessitent le worker déployé.');
+    return;
+  }
+  sb.auth.getSession().then(function(r){
+    var s=r&&r.data&&r.data.session; if(!s){ show('err','Reconnecte-toi.'); return; }
+    return fetch(WORKER_URL.replace(/\/$/,'')+'/redeem-code',{
+      method:'POST',headers:{'Authorization':'Bearer '+s.access_token,'Content-Type':'application/json'},
+      body:JSON.stringify({code:code})
+    }).then(function(res){return res.json();}).then(function(j){
+      if(j&&j.ok){ window.location.href=FORMATIONS_URL; }
+      else{ show('err','❌ Code privilège invalide.'); }
+    });
+  }).catch(function(err){ show('err','Erreur de vérification du code.'); });
+}
+
+/* INSCRIPTION */
+$('formSignup').addEventListener('submit',function(e){
+  e.preventDefault();hide();
+  if(!sb){show('err','Supabase non chargé. Vérifie ta connexion.');return;}
+  var first=$('su_first').value.trim(),last=$('su_last').value.trim(),email=$('su_email').value.trim(),
+      phone=$('su_phone').value.trim(),zip=$('su_zip').value.trim(),pass=$('su_pass').value;
+  if(!first||!last||!email||!phone||!zip||!pass){show('err','Tous les champs sont obligatoires.');return;}
+  if(!emailOk(email)){show('err','Email invalide.');return;}
+  if(pass.length<6){show('err','Mot de passe : 6 caractères minimum.');return;}
+  var cgvC=$('su_cgv');if(cgvC&&!cgvC.checked){show('err','Merci d\'accepter les CGV/CGU pour créer ton compte.');var _w=document.getElementById('su_cgv_wrap');if(_w){_w.classList.remove('err');void _w.offsetWidth;_w.classList.add('err');}return;}
+  try{localStorage.setItem('an_cgv',JSON.stringify({accepted:1,date:new Date().toISOString(),version:'1.0',email:email.toLowerCase()}));}catch(_e){}
+  busy($('btnSignup'),true,'Création du compte…');
+  sb.auth.signUp({email:email,password:pass,options:{data:{first_name:first,last_name:last,phone:phone,postal_code:zip}}})
+   .then(function(r){
+     if(r.error){ busy($('btnSignup'),false); 
+       if(/already|registered/i.test(r.error.message)){
+         return sb.auth.signInWithPassword({email:email,password:pass}).then(function(r2){
+           if(r2.error){ show('err','Un compte existe déjà. Vérifie ton mot de passe ou clique « J\'ai déjà un compte ».'); }
+           else { afterAuth(); }
+         });
+       }
+       show('err', friendlyErr(r.error.message)); return; }
+     /* Enregistre les coordonnées dans la table profiles (pour ton futur espace admin) */
+     var uid=r.data.user&&r.data.user.id;
+     var doProfile = uid ? sb.from('profiles').upsert({id:uid,first_name:first,last_name:last,email:email,phone:phone,postal_code:zip}) : Promise.resolve();
+     Promise.resolve(doProfile).finally(function(){
+       if(r.data.session){ afterAuth(); return; }
+       /* Pas de session -> connexion automatique immédiate (aucun message email) */
+       sb.auth.signInWithPassword({email:email,password:pass}).then(function(r2){
+         if(r2.error){ busy($('btnSignup'),false); show('err', friendlyErr(r2.error.message)); }
+         else { afterAuth(); }
+       });
+     });
+   }).catch(function(err){ busy($('btnSignup'),false); show('err','Erreur : '+err.message); });
+});
+
+/* CONNEXION */
+$('formLogin').addEventListener('submit',function(e){
+  e.preventDefault();hide();
+  if(!sb){show('err','Supabase non chargé.');return;}
+  var email=$('li_email').value.trim(),pass=$('li_pass').value;
+  if(!email||!pass){show('err','Email et mot de passe requis.');return;}
+  busy($('btnLogin'),true,'Connexion…');
+  sb.auth.signInWithPassword({email:email,password:pass}).then(function(r){
+    if(r.error){ busy($('btnLogin'),false); show('err', friendlyErr(r.error.message)); return; }
+    afterAuth();
+  }).catch(function(err){ busy($('btnLogin'),false); show('err','Erreur : '+err.message); });
+});
+
+/* Déjà connecté ? propose d'aller au paiement directement */
+if(sb){
+  sb.auth.getSession().then(function(r){
+    if(r&&r.data&&r.data.session){
+      show('info','Tu es déjà connecté. <a href="#" id="goPay" style="color:var(--gold-l);font-weight:700">Continuer vers le paiement →</a>');
+      var g=$('goPay'); if(g) g.addEventListener('click',function(ev){ev.preventDefault();afterAuth();});
+    }
+  });
+}
+
+/* Fond particules léger (même identité que index.html) — PERF : traits regroupés + pause onglet caché */
+(function(){
+  var cv=$('cv'); if(!cv) return; var ctx=null; try{ctx=cv.getContext('2d',{alpha:false,desynchronized:true});}catch(e){} if(!ctx) return;
+  var DPR=Math.min(window.devicePixelRatio||1,2),W,H,N=48;
+  function rz(){W=cv.width=innerWidth*DPR;H=cv.height=innerHeight*DPR;cv.style.width=innerWidth+'px';cv.style.height=innerHeight+'px';}
+  rz();addEventListener('resize',rz,{passive:true});
+  var pts=Array.from({length:N},function(){return{x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*.25*DPR,vy:(Math.random()-.5)*.2*DPR,r:(Math.random()*1.6+.8)*DPR,a:Math.random()*.4+.4};});
+  var AB=14,bk=[],k;for(k=0;k<AB;k++)bk.push([]);
+  var on=!document.hidden;
+  document.addEventListener('visibilitychange',function(){var w=on;on=!document.hidden;if(on&&!w)requestAnimationFrame(d);});
+  function d(){
+    if(!on)return;
+    ctx.fillStyle='#000';ctx.fillRect(0,0,W,H);
+    var i,j,m=160*DPR,m2=m*m,u;
+    for(k=0;k<AB;k++)bk[k].length=0;
+    for(i=0;i<N;i++){var p=pts[i];p.x+=p.vx;p.y+=p.vy;if(p.x<0||p.x>W)p.vx*=-1;if(p.y<0||p.y>H)p.vy*=-1;}
+    for(i=0;i<N;i++){var a=pts[i];
+      for(j=i+1;j<N;j++){var b=pts[j],dx=a.x-b.x,dy=a.y-b.y,d2=dx*dx+dy*dy;
+        if(d2<m2){var t=1-Math.sqrt(d2)/m;var kk=Math.min(AB-1,(t*t*AB)|0);bk[kk].push(a.x,a.y,b.x,b.y);}}}
+    ctx.lineWidth=.5*DPR;
+    for(k=0;k<AB;k++){var sgs=bk[k];if(!sgs.length)continue;
+      ctx.strokeStyle='rgba(255,46,62,'+(((k+.5)/AB)*.28).toFixed(4)+')';
+      ctx.beginPath();
+      for(u=0;u<sgs.length;u+=4){ctx.moveTo(sgs[u],sgs[u+1]);ctx.lineTo(sgs[u+2],sgs[u+3]);}
+      ctx.stroke();}
+    for(i=0;i<N;i++){var c=pts[i];ctx.fillStyle='rgba(255,255,255,'+Math.max(.35,c.a)+')';ctx.beginPath();ctx.arc(c.x,c.y,c.r,0,Math.PI*2);ctx.fill();}
+    requestAnimationFrame(d);
+  }
+  try{d();}catch(e){}
+})();
+
+})();
+</script>
+<!-- ═══ ALPHA NEX — Conditions Générales de Vente & d'Utilisation ═══ -->
+<div class="cgv-ov" id="cgv-ov" aria-hidden="true">
+  <div class="cgv-card" role="dialog" aria-modal="true" aria-labelledby="cgv-title">
+    <button class="cgv-x" id="cgv-x" aria-label="Fermer les conditions" title="Fermer">✕</button>
+    <div class="cgv-head">
+      <div class="cgv-ic">📜</div>
+      <h2 class="cgv-title" id="cgv-title">Conditions Générales</h2>
+      <p class="cgv-sub">Vente &amp; Utilisation · Alpha Nex</p>
+    </div>
+    <div class="cgv-body" id="cgv-body">
+
+      <div class="cgv-sec">
+        <h3><span class="num">01</span> Objet &amp; éditeur</h3>
+        <p>Les présentes Conditions Générales de Vente et d'Utilisation (« CGV/CGU ») régissent l'accès et l'utilisation des formations et services en ligne proposés par <strong>Groupe Alpha Nex Strasbourg</strong> (« Alpha Nex »), édités par Brice Jacotet, ainsi que la vente des abonnements associés. Toute création de compte ou tout achat vaut acceptation pleine et entière des présentes.</p>
+      </div>
+
+      <div class="cgv-sec">
+        <h3><span class="num">02</span> Services &amp; accès</h3>
+        <p>Alpha Nex propose un accès privé à des <strong>formations en ligne</strong> (intelligence artificielle, développement web, applications et logiciels), des ressources, des templates et un accompagnement communautaire.</p>
+        <ul>
+          <li>Accès délivré via un espace membre personnel et <strong>non partageable</strong>.</li>
+          <li>Contenus fournis « en l'état » et enrichis régulièrement.</li>
+          <li>Un accès Internet et un appareil compatible sont nécessaires.</li>
+        </ul>
+      </div>
+
+      <div class="cgv-sec">
+        <h3><span class="num">03</span> Prix &amp; paiement</h3>
+        <p>L'abonnement est proposé au tarif indiqué sur le site, soit <strong>10 € par mois</strong> (TTC). Le paiement est traité de façon sécurisée par notre prestataire <strong>Revolut</strong>. Aucune donnée bancaire n'est stockée par Alpha Nex. L'abonnement se renouvelle par périodes successives jusqu'à résiliation.</p>
+      </div>
+
+      <div class="cgv-sec">
+        <h3><span class="num">04</span> Mise à disposition</h3>
+        <p>L'accès aux contenus est <strong>immédiat</strong> après confirmation du paiement, dans la limite des disponibilités techniques. Il s'agit d'un contenu numérique fourni en ligne, sans support matériel.</p>
+      </div>
+
+      <div class="cgv-sec">
+        <h3><span class="num">05</span> Droit de rétractation</h3>
+        <p>Conformément au Code de la consommation, le client dispose en principe d'un délai de <strong>14 jours</strong> pour se rétracter. S'agissant d'un contenu numérique fourni immédiatement, le client <strong>reconnaît renoncer expressément à son droit de rétractation</strong> dès le début de l'exécution du service, et perd ce droit une fois l'accès ouvert (art. L221-28 du Code de la consommation).</p>
+      </div>
+
+      <div class="cgv-sec">
+        <h3><span class="num">06</span> Durée &amp; résiliation</h3>
+        <p>L'abonnement est <strong>sans engagement</strong>. Le client peut résilier à tout moment ; la résiliation prend effet à la fin de la période en cours, sans remboursement du mois entamé. Alpha Nex peut suspendre un accès en cas de non-paiement ou de non-respect des présentes.</p>
+      </div>
+
+      <div class="cgv-sec">
+        <h3><span class="num">07</span> Propriété intellectuelle</h3>
+        <p>L'ensemble des contenus (vidéos, textes, codes, templates, marques et visuels) est protégé et reste la propriété exclusive d'Alpha Nex. L'accès confère un droit d'usage <strong>personnel et non exclusif</strong>. Sont interdits : la reproduction, la revente, le partage d'accès, la diffusion publique ou la réutilisation commerciale sans autorisation écrite.</p>
+      </div>
+
+      <div class="cgv-sec">
+        <h3><span class="num">08</span> Données personnelles (RGPD)</h3>
+        <p>Alpha Nex, responsable de traitement, collecte les données que tu fournis (identité, e-mail, téléphone, code postal) ainsi que des données techniques de connexion (appareil, navigateur, adresse IP et géolocalisation <strong>uniquement si tu y consens</strong>).</p>
+        <p>Ces données sont traitées pour les finalités suivantes :</p>
+        <ul>
+          <li>Fournir et gérer ton accès à la formation et à ton compte.</li>
+          <li>Traiter les paiements et assurer la sécurité du service.</li>
+          <li><strong>Améliorer en continu le site, les formations et l'expérience</strong> (analyse d'usage, mesure d'audience, correction de bugs, personnalisation).</li>
+          <li>T'informer des nouveautés liées à ton accès.</li>
+        </ul>
+        <p>Bases légales : exécution du contrat, consentement (géolocalisation, communications) et intérêt légitime (amélioration &amp; sécurité). Les données sont conservées le temps nécessaire puis supprimées ou anonymisées. Elles ne sont <strong>jamais revendues</strong>.</p>
+        <p>Tu disposes d'un droit d'accès, de rectification, d'effacement, de limitation et d'opposition, et du droit de retirer ton consentement à tout moment. Pour l'exercer, contacte Alpha Nex ; tu peux aussi saisir la CNIL.</p>
+      </div>
+
+      <div class="cgv-sec">
+        <h3><span class="num">09</span> Cookies &amp; mesure d'audience</h3>
+        <p>Le site utilise des cookies et un stockage local nécessaires au fonctionnement (session, préférences) et, le cas échéant, à la mesure d'audience afin d'améliorer le service. Tu peux gérer ces choix via ton navigateur.</p>
+      </div>
+
+      <div class="cgv-sec">
+        <h3><span class="num">10</span> Responsabilité</h3>
+        <p>Alpha Nex fournit ses formations à titre pédagogique et met tout en œuvre pour en assurer la qualité et la disponibilité, sans garantie de résultat. Sa responsabilité ne saurait être engagée pour l'usage fait des contenus ni pour une interruption indépendante de sa volonté.</p>
+      </div>
+
+      <div class="cgv-sec">
+        <h3><span class="num">11</span> Droit applicable &amp; litiges</h3>
+        <p>Les présentes sont soumises au <strong>droit français</strong>. En cas de litige, une solution amiable sera recherchée en priorité ; à défaut, le client consommateur peut recourir à un médiateur de la consommation. Les tribunaux compétents sont ceux du ressort applicable.</p>
+      </div>
+
+      <div class="cgv-sec">
+        <h3><span class="num">12</span> Acceptation</h3>
+        <p>En cochant la case prévue lors de la création de ton compte, tu déclares avoir lu, compris et accepté sans réserve les présentes Conditions Générales de Vente et d'Utilisation, y compris la politique de traitement des données.</p>
+      </div>
+
+      <p class="cgv-note">Dernière mise à jour : à la date de mise en ligne. Modèle standard pour la vente de formations en ligne — à adapter et faire valider selon ta situation (mentions légales, coordonnées de contact, médiateur). Ceci n'est pas un conseil juridique.</p>
+
+      <button class="cgv-close" id="cgv-close" type="button">Fermer les conditions</button>
+
+    </div>
+  </div>
+</div>
+
+
+<script>
+/* ═══ ALPHA NEX — contrôle modale CGV + case animée ═══ */
+(function(){'use strict';
+  var ov=document.getElementById('cgv-ov'),body=document.getElementById('cgv-body');
+  function open(e){if(e){e.preventDefault();e.stopPropagation();}if(!ov)return;ov.classList.add('show');ov.setAttribute('aria-hidden','false');document.documentElement.style.overflow='hidden';if(body)body.scrollTop=0;}
+  function close(){if(!ov)return;ov.classList.remove('show');ov.setAttribute('aria-hidden','true');document.documentElement.style.overflow='';}
+  window.AN_openCGV=open;window.AN_closeCGV=close;
+  Array.prototype.forEach.call(document.querySelectorAll('.cgv-trigger'),function(el){el.addEventListener('click',open);});
+  var x=document.getElementById('cgv-x');if(x)x.addEventListener('click',close);
+  var c=document.getElementById('cgv-close');if(c)c.addEventListener('click',close);
+  if(ov)ov.addEventListener('click',function(e){if(e.target===ov)close();});
+  document.addEventListener('keydown',function(e){if((e.key==='Escape'||e.key==='Esc')&&ov&&ov.classList.contains('show'))close();});
+  Array.prototype.forEach.call(document.querySelectorAll('.cgv-check'),function(w){var inp=w.querySelector('input[type=checkbox]');if(!inp)return;function sync(){w.classList.toggle('on',inp.checked);if(inp.checked)w.classList.remove('err');}inp.addEventListener('change',sync);sync();});
+})();
+</script>
+
+</body>
+</html>

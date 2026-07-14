@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Erreur 500 — Alpha Nex</title>
+<meta name="robots" content="noindex"/>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=Cinzel:wght@700;900&family=Newsreader:wght@500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{--gold:#ff2e3e;--gold-l:#ff5d6b;--gold-d:#8a1420}
+html,body{background:#000;color:#fff;font-family:'Inter',sans-serif;min-height:100vh;overflow:hidden}
+body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.04;mix-blend-mode:overlay;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+#cv{position:fixed;inset:0;z-index:0}
+.wrap{position:relative;z-index:2;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:26px}
+.ico{font-size:40px;margin-bottom:6px;filter:drop-shadow(0 0 20px rgba(255,46,62,.4))}
+.code{font-family:'Cinzel',serif;font-weight:900;font-size:clamp(70px,26vw,150px);line-height:.9;letter-spacing:2px;background:linear-gradient(135deg,#ff2e3e,#ff8a94,#8a1420);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;position:relative;animation:g 3.5s ease-in-out infinite}
+@keyframes g{0%,100%{filter:drop-shadow(0 0 18px rgba(255,46,62,.25))}50%{filter:drop-shadow(0 0 34px rgba(245,208,122,.5))}}
+.title{font-family:'Cinzel',serif;font-size:clamp(18px,5vw,24px);font-weight:700;margin-top:4px;text-transform:uppercase;letter-spacing:1px}
+.msg{font-size:13.5px;color:rgba(255,255,255,.6);line-height:1.6;max-width:340px;margin:12px auto 26px}
+.home{display:inline-flex;align-items:center;gap:8px;padding:15px 28px;border-radius:12px;background:linear-gradient(90deg,var(--gold-d),var(--gold-l),var(--gold-d));background-size:200%;animation:sh 2.6s linear infinite;color:#000;font-weight:800;font-size:14.5px;text-decoration:none;box-shadow:0 0 26px rgba(245,208,122,.3);transition:transform .15s}
+.home:hover{transform:translateY(-2px)}
+@keyframes sh{0%{background-position:200%}100%{background-position:-200%}}
+.sig{position:fixed;bottom:16px;left:0;right:0;text-align:center;font-size:10px;color:rgba(255,255,255,.22);z-index:2}
+.line{width:60px;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin:0 auto 18px}
+.ap-name{font-family:'Newsreader',Georgia,'Times New Roman',serif;font-weight:600;letter-spacing:.2px;background:linear-gradient(115deg,#7a5c1c 0%,#ff2e3e 16%,#f7f1dd 32%,#ff5d6b 48%,#b8902a 64%,#e9e9ec 80%,#8a1420 100%);background-size:220% auto;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;animation:apShine 5.5s linear infinite;text-decoration:none;white-space:nowrap;filter:drop-shadow(0 1px 1px rgba(0,0,0,.45))}
+@keyframes apShine{to{background-position:220% center}}
+@media (prefers-reduced-motion:reduce){.ap-name{animation:none}}
+</style>
+<style>#cv{transform:translateZ(0)}</style>
+</head>
+<body>
+<canvas id="cv"></canvas>
+<div class="ap-name" style="position:fixed;top:16px;left:18px;z-index:5;font-size:13px">Alpha Protocol</div>
+<div class="wrap">
+  <div class="ico">⚙️</div>
+  <div class="code">500</div>
+  <div class="line"></div>
+  <div class="title">Erreur serveur</div>
+  <p class="msg">Un problème est survenu de notre côté. Réessaie dans un instant — on gère ça.</p>
+  <a class="home" href="index.html">← Revenir à l'accueil</a>
+</div>
+<p class="sig">@ By Brice Jct · Alpha OS · Groupe Alpha Nex Strasbourg</p>
+<script>
+(function(){'use strict';
+/* Tracking Supabase (l'erreur apparaît dans l'historique admin) */
+var SB="https://pjvukiihkaqxrcqlrkpw.supabase.co", KEY="sb_publishable_h9IZ8_vABurU1544_D0q_A_79LGsqu1";
+try{
+  var sid=localStorage.getItem('an_sid')||('s_'+Math.random().toString(36).slice(2,10));
+  localStorage.setItem('an_sid',sid);
+  fetch(SB+'/rest/v1/visits',{method:'POST',keepalive:true,headers:{'apikey':KEY,'Authorization':'Bearer '+KEY,'Content-Type':'application/json','Prefer':'return=minimal'},
+    body:JSON.stringify({session_id:sid,event:'view',path:'erreur-500 ('+location.pathname+')',referrer:document.referrer||'',ua:(navigator.userAgent||'').slice(0,300)})});
+}catch(e){}
+/* Fond particules léger */
+(function(){var cv=document.getElementById('cv'),ctx;try{ctx=cv.getContext('2d',{alpha:false,desynchronized:true});}catch(e){}if(!ctx)return;
+var DPR=Math.min(window.devicePixelRatio||1,2),W,H,N=40;
+function rz(){W=cv.width=innerWidth*DPR;H=cv.height=innerHeight*DPR;cv.style.width=innerWidth+'px';cv.style.height=innerHeight+'px';}rz();addEventListener('resize',rz,{passive:true});
+var p=Array.from({length:N},function(){return{x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*.25*DPR,vy:(Math.random()-.5)*.2*DPR,r:(Math.random()*1.5+.7)*DPR};});
+var AB=12,bk=[],k;for(k=0;k<AB;k++)bk.push([]);
+var on=!document.hidden;document.addEventListener('visibilitychange',function(){var w=on;on=!document.hidden;if(on&&!w)requestAnimationFrame(d);});
+function d(){if(!on)return;ctx.fillStyle='#000';ctx.fillRect(0,0,W,H);
+var i,j,m=150*DPR,m2=m*m,u;for(k=0;k<AB;k++)bk[k].length=0;
+for(i=0;i<N;i++){var a=p[i];a.x+=a.vx;a.y+=a.vy;if(a.x<0||a.x>W)a.vx*=-1;if(a.y<0||a.y>H)a.vy*=-1;}
+for(i=0;i<N;i++){for(j=i+1;j<N;j++){var b=p[j],dx=p[i].x-b.x,dy=p[i].y-b.y,d2=dx*dx+dy*dy;if(d2<m2){var t=1-Math.sqrt(d2)/m;var kk=Math.min(AB-1,(t*t*AB)|0);bk[kk].push(p[i].x,p[i].y,b.x,b.y);}}}
+ctx.lineWidth=.5*DPR;
+for(k=0;k<AB;k++){var sg=bk[k];if(!sg.length)continue;ctx.strokeStyle='rgba(255,46,62,'+(((k+.5)/AB)*.26).toFixed(4)+')';ctx.beginPath();for(u=0;u<sg.length;u+=4){ctx.moveTo(sg[u],sg[u+1]);ctx.lineTo(sg[u+2],sg[u+3]);}ctx.stroke();}
+ctx.fillStyle='rgba(255,255,255,.5)';
+for(i=0;i<N;i++){ctx.beginPath();ctx.arc(p[i].x,p[i].y,p[i].r,0,Math.PI*2);ctx.fill();}
+requestAnimationFrame(d);}try{d();}catch(e){}})();
+})();
+</script>
+</body>
+</html>
