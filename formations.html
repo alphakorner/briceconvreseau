@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Espace Client — Alpha Protocol</title>
+<meta name="robots" content="noindex"/>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Cinzel:wght@600;700;900&family=Newsreader:wght@500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --accent:#c9a84c;      /* OR — mets #FF1A1A ici pour la version ROUGE */
+  --accent-l:#f0c060;
+  --accent-d:#8a6a20;
+  --bg:#0a0a0b;
+  --panel:rgba(255,255,255,.03);
+}
+html,body{background:var(--bg);color:#ececec;font-family:'Inter',sans-serif;min-height:100vh;-webkit-font-smoothing:antialiased}
+body{overflow-x:hidden;padding-bottom:96px}
+body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.035;mix-blend-mode:overlay;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+a{text-decoration:none;color:inherit}
+.ap-name{font-family:'Newsreader',Georgia,serif;font-weight:600;letter-spacing:.2px;background:linear-gradient(115deg,#7a5c1c,#c9a84c 20%,#f7f1dd 38%,#f0c060 52%,#b8902a 68%,#e9e9ec 84%,#8a6a20);background-size:220% auto;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;animation:apShine 5.5s linear infinite;filter:drop-shadow(0 1px 1px rgba(0,0,0,.4))}
+@keyframes apShine{to{background-position:220% center}}
+@keyframes ring{to{stroke-dashoffset:0}}
+@keyframes sp{to{transform:rotate(360deg)}}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+@keyframes shim{0%{background-position:200%}100%{background-position:-200%}}
+@keyframes pl{0%,100%{opacity:.4}50%{opacity:1}}
+.glass{background:var(--panel);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border:1px solid rgba(255,255,255,.06);border-top-color:rgba(255,255,255,.1)}
+.glow{filter:drop-shadow(0 0 16px rgba(201,168,76,.35))}
+
+.topbar{position:fixed;top:0;left:0;right:0;z-index:40;height:60px;display:flex;align-items:center;justify-content:space-between;padding:0 18px;background:rgba(10,10,11,.72);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,.06)}
+.tb-l{display:flex;align-items:center;gap:10px}
+.tb-av{width:34px;height:34px;border-radius:50%;overflow:hidden;border:1px solid rgba(201,168,76,.4);flex-shrink:0;background:#111}
+.tb-av img{width:100%;height:100%;object-fit:cover;display:block}
+.tb-out{font-size:11px;color:rgba(255,255,255,.55);border:1px solid rgba(255,255,255,.15);padding:7px 13px;border-radius:20px;background:none;cursor:pointer;font-family:inherit}
+.tb-out:hover{color:var(--accent-l);border-color:var(--accent-d)}
+
+#gate{position:fixed;inset:0;z-index:100;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;background:var(--bg);text-align:center;padding:24px}
+.gspin{width:44px;height:44px;border:3px solid rgba(201,168,76,.2);border-top-color:var(--accent);border-radius:50%;animation:sp .8s linear infinite}
+.gtxt{font-size:13px;color:rgba(255,255,255,.55)}
+
+#blockOv{position:fixed;inset:0;z-index:120;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(0,0,0,.92);backdrop-filter:blur(16px)}
+#blockOv.show{display:flex;animation:fade .3s ease}
+.block-card{width:100%;max-width:380px;text-align:center;background:linear-gradient(160deg,#150d00,#0a0808 55%,#150d00);border:1.5px solid #6a4a10;border-radius:18px;padding:28px 22px}
+.block-ico{width:56px;height:56px;margin:0 auto 14px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:rgba(201,168,76,.12);border:1px solid rgba(201,168,76,.4);font-size:26px}
+.block-t{font-family:'Cinzel',serif;font-size:17px;font-weight:700;margin-bottom:10px}
+.block-d{font-size:12.5px;color:rgba(255,255,255,.65);line-height:1.6;margin-bottom:20px}
+.block-d b{color:var(--accent-l)}
+.block-pay{width:100%;padding:15px;border:none;border-radius:11px;background:linear-gradient(90deg,var(--accent-d),var(--accent-l),var(--accent-d));background-size:200%;animation:shim 2.6s linear infinite;font-size:15px;font-weight:800;color:#000;cursor:pointer;font-family:inherit}
+.block-alt{display:inline-block;margin-top:14px;font-size:11.5px;color:rgba(255,255,255,.42);text-decoration:underline;cursor:pointer}
+
+#app{display:none;position:relative;z-index:2;max-width:680px;margin:0 auto;padding:78px 16px 40px}
+#app.show{display:block;animation:fade .5s ease}
+.hero{text-align:center;position:relative;padding:8px 0 4px}
+.hero h1{font-size:clamp(28px,8vw,36px);font-weight:900;line-height:1.08;letter-spacing:-.5px;color:#fff}
+.hero h1 .g{color:var(--accent);filter:drop-shadow(0 0 14px rgba(201,168,76,.5))}
+.hero p{font-size:13.5px;color:rgba(255,255,255,.55);margin-top:8px}
+.gauge{position:relative;width:172px;height:172px;margin:22px auto 4px}
+.gauge svg{width:100%;height:100%;transform:rotate(-90deg)}
+.gauge .c{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.gauge .c b{font-size:30px;font-weight:900;color:#fff;line-height:1}
+.gauge .c span{font-size:9.5px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.5);margin-top:5px}
+.paid-ref{font-size:10px;color:rgba(255,255,255,.3);font-family:monospace;margin-top:8px}
+
+.sec{margin-top:28px}
+.sec-h{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.sec-h h3{font-size:16px;font-weight:800;color:#fff}
+
+.callcard{position:relative;border-radius:18px;padding:22px;overflow:hidden}
+.callcard::after{content:'';position:absolute;top:-40px;right:-40px;width:150px;height:150px;background:radial-gradient(circle,rgba(201,168,76,.22),transparent 70%);z-index:0}
+.callcard .row{position:relative;z-index:1;display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:18px}
+.tag{display:inline-flex;align-items:center;gap:6px;font-size:10px;font-weight:700;color:var(--accent-l);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--accent-l);box-shadow:0 0 8px var(--accent-l);animation:pl 1.4s ease-in-out infinite}
+.callcard h2{font-size:20px;font-weight:800;color:#fff}
+.callcard .sub{font-size:13px;color:rgba(255,255,255,.55)}
+.callcard .ic{width:48px;height:48px;border-radius:50%;background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.25);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+.callbtn{position:relative;z-index:1;width:100%;padding:15px;border-radius:12px;background:linear-gradient(90deg,var(--accent-d),var(--accent-l),var(--accent-d));background-size:200%;animation:shim 2.8s linear infinite;color:#000;font-weight:800;font-size:14px;display:flex;align-items:center;justify-content:center;gap:8px;border:none;cursor:pointer;font-family:inherit}
+
+.fscroll{display:flex;gap:14px;overflow-x:auto;padding-bottom:6px;margin:0 -16px;padding-left:16px;padding-right:16px;scroll-snap-type:x mandatory;-ms-overflow-style:none;scrollbar-width:none}
+.fscroll::-webkit-scrollbar{display:none}
+.fcard{min-width:230px;scroll-snap-align:start;border-radius:16px;overflow:hidden;position:relative;aspect-ratio:4/5;display:flex;flex-direction:column;justify-content:flex-end;background:linear-gradient(160deg,#161616,#0c0c0c);border:1px solid rgba(255,255,255,.06)}
+.fcard-img{position:absolute;inset:0;background-size:cover;background-position:center;opacity:.55;transition:opacity .4s}
+.fcard:hover .fcard-img{opacity:.72}
+.fcard-grad{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.94) 12%,rgba(0,0,0,.15) 62%,rgba(0,0,0,.45))}
+.fcard-top{position:absolute;top:12px;left:12px;right:12px;z-index:2;display:flex;justify-content:space-between;align-items:center}
+.fcard-tag{font-size:9px;font-weight:700;letter-spacing:1px;padding:4px 8px;border-radius:6px;background:rgba(0,0,0,.45);border:1px solid rgba(201,168,76,.3);color:var(--accent-l)}
+.fcard-body{position:relative;z-index:2;padding:16px}
+.fcard-body .m{font-size:10px;color:var(--accent-l);letter-spacing:1px;text-transform:uppercase;font-weight:700}
+.fcard-body h4{font-size:16px;font-weight:800;color:#fff;margin:3px 0 12px;line-height:1.2}
+.fcard-dl{display:flex;align-items:center;justify-content:center;gap:6px;width:100%;padding:11px;border-radius:10px;background:linear-gradient(135deg,var(--accent-l),var(--accent));color:#000;font-weight:800;font-size:12.5px}
+.fcard-dl:active{transform:scale(.98)}
+
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.tool{border-radius:14px;padding:18px 12px;display:flex;flex-direction:column;align-items:center;gap:10px;cursor:pointer;transition:background .2s;text-align:center}
+.tool:hover{background:rgba(201,168,76,.05)}
+.tool .ti{width:46px;height:46px;border-radius:50%;background:rgba(201,168,76,.08);border:1px solid rgba(201,168,76,.2);display:flex;align-items:center;justify-content:center;font-size:20px}
+.tool span{font-size:12px;color:rgba(255,255,255,.7)}
+
+.support{border-radius:18px;padding:26px 22px;text-align:center;position:relative;overflow:hidden}
+.support::after{content:'';position:absolute;inset:0;background:radial-gradient(circle at 50% 0,rgba(201,168,76,.12),transparent 60%);z-index:0}
+.support>*{position:relative;z-index:1}
+.support .ico{width:60px;height:60px;margin:0 auto 14px;border-radius:50%;background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.3);display:flex;align-items:center;justify-content:center;font-size:26px}
+.support h4{font-size:17px;font-weight:800;color:#fff;margin-bottom:6px}
+.support p{font-size:12.5px;color:rgba(255,255,255,.6);line-height:1.55;margin-bottom:16px}
+.support .links{display:flex;justify-content:center;gap:14px;font-size:11px}
+.support .links a{color:var(--accent-l);text-transform:uppercase;letter-spacing:.5px}
+.sig{text-align:center;margin-top:26px;font-size:10px;color:rgba(255,255,255,.25)}
+
+.bnav{position:fixed;bottom:0;left:0;right:0;z-index:40;height:76px;display:flex;justify-content:space-around;align-items:center;padding:0 8px;background:rgba(10,10,11,.78);backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px);border-top:1px solid rgba(255,255,255,.07);box-shadow:0 -8px 30px rgba(0,0,0,.4)}
+.bnav a{display:flex;flex-direction:column;align-items:center;gap:3px;font-size:10px;color:rgba(255,255,255,.4);transition:color .2s;background:none;border:none;font-family:inherit;cursor:pointer}
+.bnav a .bi{font-size:19px}
+.bnav a.on,.bnav a:hover{color:var(--accent-l)}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="tb-l">
+    <div class="tb-av"><img src="brice-jct.png" alt="" onerror="this.style.display='none'"></div>
+    <span class="ap-name" style="font-size:16px">Alpha Protocol</span>
+  </div>
+  <button class="tb-out" id="logout">Déconnexion</button>
+</div>
+
+<div id="gate"><div class="gspin"></div><div class="gtxt">Vérification de ton accès…</div></div>
+
+<div id="blockOv">
+  <div class="block-card">
+    <div class="block-ico">🔒</div>
+    <div class="block-t">Accès réservé aux membres</div>
+    <div class="block-d">Ton paiement n'est pas encore validé.<br>Finalise ton accès <b>10€</b> (<b>paiement unique</b>) pour débloquer tes formations et l'accompagnement privé.</div>
+    <button class="block-pay" id="payNow">Finaliser mon paiement — 10€ →</button>
+    <a class="block-alt" id="reconnect">Me reconnecter</a>
+  </div>
+</div>
+
+<main id="app">
+  <section class="hero">
+    <h1>Bon retour,<br><span class="g" id="uName">Champion</span></h1>
+    <p>Ton espace privé <b style="color:var(--accent-l)">Alpha Protocol</b> — tout est débloqué.</p>
+    <div class="gauge glow">
+      <svg viewBox="0 0 100 100">
+        <defs><linearGradient id="gg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f0c060"/><stop offset="1" stop-color="#8a6a20"/></linearGradient></defs>
+        <circle cx="50" cy="50" r="45" fill="none" stroke="rgba(255,255,255,.06)" stroke-width="7"/>
+        <circle cx="50" cy="50" r="45" fill="none" stroke="url(#gg)" stroke-width="7" stroke-linecap="round" stroke-dasharray="283" stroke-dashoffset="283" style="animation:ring 1.6s ease-out forwards"/>
+      </svg>
+      <div class="c"><b>✓</b><span>Accès actif</span></div>
+    </div>
+    <div class="paid-ref" id="payRef"></div>
+  </section>
+
+  <section class="sec">
+    <div class="callcard glass">
+      <div class="row">
+        <div>
+          <div class="tag"><span class="dot"></span> Mentorat en direct</div>
+          <h2>Appel privé</h2>
+          <div class="sub">avec Brice Jct</div>
+        </div>
+        <div class="ic">🎥</div>
+      </div>
+      <a class="callbtn" id="planBtn" href="#">📅 Planifier une session</a>
+    </div>
+  </section>
+
+  <section class="sec" id="formations">
+    <div class="sec-h"><h3>📚 Tes formations</h3></div>
+    <div class="fscroll">
+      <div class="fcard">
+        <div class="fcard-img" style="background-image:url('formation-1.jpg')"></div>
+        <div class="fcard-grad"></div>
+        <div class="fcard-top"><span class="fcard-tag">DÉBUTANT</span><span>🧠</span></div>
+        <div class="fcard-body"><div class="m">Module 1</div><h4>Démarrage &amp; méthode</h4>
+          <a class="fcard-dl" href="module-1-demarrage.docx" download>⬇ Télécharger</a></div>
+      </div>
+      <div class="fcard">
+        <div class="fcard-img" style="background-image:url('formation-2.jpg')"></div>
+        <div class="fcard-grad"></div>
+        <div class="fcard-top"><span class="fcard-tag">INTERMÉDIAIRE</span><span>⚡</span></div>
+        <div class="fcard-body"><div class="m">Module 2</div><h4>IA appliquée</h4>
+          <a class="fcard-dl" href="module-2-ia-appliquee.docx" download>⬇ Télécharger</a></div>
+      </div>
+      <div class="fcard">
+        <div class="fcard-img" style="background-image:url('formation-3.jpg')"></div>
+        <div class="fcard-grad"></div>
+        <div class="fcard-top"><span class="fcard-tag">EXPERT</span><span>💎</span></div>
+        <div class="fcard-body"><div class="m">Module 3</div><h4>Kits &amp; Packs exclusifs</h4>
+          <a class="fcard-dl" href="module-3-kits-packs.docx" download>⬇ Télécharger</a></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="sec-h"><h3>⚡ Accès rapide</h3></div>
+    <div class="grid2">
+      <div class="tool glass" id="tool-docs"><div class="ti">📄</div><span>Mes documents</span></div>
+      <a class="tool glass" id="tool-call"><div class="ti">📞</div><span>Appel de suivi</span></a>
+      <a class="tool glass" id="tool-wa"><div class="ti">💬</div><span>WhatsApp</span></a>
+      <a class="tool glass" href="index.html"><div class="ti">🏠</div><span>Site</span></a>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="support glass">
+      <div class="ico">🎧</div>
+      <h4>Accompagnement Alpha 24/7</h4>
+      <p>Review de projets, retours personnalisés, <b style="color:var(--accent-l)">appels + suivi WhatsApp</b> perso avec Brice pour te faire réussir en moins de 72h.</p>
+      <div class="links">
+        <a id="lnk-contact">Contact direct</a><span style="color:rgba(255,255,255,.2)">•</span>
+        <a id="lnk-res">Ressources</a>
+      </div>
+    </div>
+    <p class="sig">@ By Brice Jct · Alpha OS · Groupe Alpha Nex Strasbourg</p>
+  </section>
+</main>
+
+<nav class="bnav">
+  <button class="on" id="nav-home"><span class="bi">🏠</span>Accueil</button>
+  <button id="nav-form"><span class="bi">📚</span>Formations</button>
+  <button id="nav-tools"><span class="bi">🧰</span>Accès</button>
+  <a id="nav-contact"><span class="bi">📞</span>Contact</a>
+</nav>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+(function(){'use strict';
+var SUPABASE_URL="https://pjvukiihkaqxrcqlrkpw.supabase.co";
+var SUPABASE_ANON="sb_publishable_h9IZ8_vABurU1544_D0q_A_79LGsqu1";
+var WORKER_URL="https://late-silence-be46.strassweb67.workers.dev";
+var LOGIN_URL="compte.html";
+var CONTACT_URL="https://www.instagram.com/ghostr1der_404?igsh=aGZicDQ1NmR5NnI4";
+var REVOLUT_CHECKOUT="https://checkout.revolut.com/pay/df41974d-cef3-4574-bf0f-fca4bdeac239";
+
+var $=function(id){return document.getElementById(id);};
+var sb=null; try{ sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON); }catch(e){}
+
+/* liens contact */
+['planBtn','tool-call','tool-wa','lnk-contact','nav-contact'].forEach(function(id){var el=$(id); if(el){el.href=CONTACT_URL; el.target='_blank'; el.rel='noopener';}});
+function toForm(){ var f=$('formations'); if(f) f.scrollIntoView({behavior:'smooth'}); }
+$('tool-docs').addEventListener('click',toForm);
+$('lnk-res').addEventListener('click',toForm);
+$('nav-home').addEventListener('click',function(){ window.scrollTo({top:0,behavior:'smooth'}); });
+$('nav-form').addEventListener('click',toForm);
+$('nav-tools').addEventListener('click',toForm);
+
+function showBlocked(){ $('gate').style.display='none'; $('blockOv').classList.add('show'); }
+function showApp(name,payId){
+  $('gate').style.display='none';
+  if(name) $('uName').textContent=name;
+  if(payId) $('payRef').textContent='Réf. accès : '+payId;
+  $('app').classList.add('show');
+  try{ var sid=localStorage.getItem('an_sid')||('s_'+Math.random().toString(36).slice(2,10)); localStorage.setItem('an_sid',sid);
+    fetch(SUPABASE_URL+'/rest/v1/visits',{method:'POST',keepalive:true,headers:{'apikey':SUPABASE_ANON,'Authorization':'Bearer '+SUPABASE_ANON,'Content-Type':'application/json','Prefer':'return=minimal'},body:JSON.stringify({session_id:sid,event:'view',path:'/espace-client',referrer:document.referrer||'',ua:(navigator.userAgent||'').slice(0,300)})});
+  }catch(e){}
+}
+
+function verify(){
+  if(!sb){ showBlocked(); return; }
+  sb.auth.getSession().then(function(r){
+    var s=r&&r.data&&r.data.session;
+    if(!s){ window.location.href=LOGIN_URL; return; }
+    var name=(s.user&&s.user.user_metadata&&s.user.user_metadata.first_name)||'Champion';
+    if(/VOTRE-WORKER/i.test(WORKER_URL)){ showBlocked(); return; }
+    fetch(WORKER_URL.replace(/\/$/,'')+'/access',{headers:{'Authorization':'Bearer '+s.access_token}})
+      .then(function(res){return res.json();}).then(function(j){
+        if(j&&j.paid){ showApp(name,j.paymentId||j.payment_id); } else { showBlocked(); }
+      }).catch(function(){ showBlocked(); });
+  }).catch(function(){ showBlocked(); });
+}
+
+$('payNow').addEventListener('click',function(){
+  if(REVOLUT_CHECKOUT && !/VOTRE-LIEN/i.test(REVOLUT_CHECKOUT)){ window.location.href=REVOLUT_CHECKOUT; return; }
+  var b=$('payNow'); b.disabled=true; b.textContent='Redirection…';
+  sb.auth.getSession().then(function(r){
+    var s=r&&r.data&&r.data.session; if(!s){ window.location.href=LOGIN_URL; return; }
+    return fetch(WORKER_URL.replace(/\/$/,'')+'/create-order',{method:'POST',headers:{'Authorization':'Bearer '+s.access_token,'Content-Type':'application/json'}})
+      .then(function(res){return res.json();}).then(function(j){ if(j&&j.checkout_url){ window.location.href=j.checkout_url; } else { b.disabled=false; b.textContent='Finaliser mon paiement — 10€ →'; } });
+  }).catch(function(){ b.disabled=false; b.textContent='Finaliser mon paiement — 10€ →'; });
+});
+$('reconnect').addEventListener('click',function(){ window.location.href=LOGIN_URL; });
+$('logout').addEventListener('click',function(){ if(sb) sb.auth.signOut().finally(function(){window.location.href=LOGIN_URL;}); else window.location.href=LOGIN_URL; });
+
+verify();
+})();
+</script>
+</body>
+</html>

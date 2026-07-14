@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Mon compte — Alpha Nex | Accès Formation 10€</title>
+<meta name="robots" content="noindex"/>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Cinzel:wght@600;700;900&family=Newsreader:wght@500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{--gold:#c9a84c;--gold-l:#f0c060;--gold-d:#8a6a20;--bg:#000;--r:12px}
+html,body{background:#000;color:#fff;font-family:'Inter',sans-serif;min-height:100vh;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.04;mix-blend-mode:overlay;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+#cv{position:fixed;inset:0;z-index:0;pointer-events:none}
+.wrap{position:relative;z-index:2;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:28px 18px}
+.brand{text-align:center;margin-bottom:20px}
+.brand-t{font-family:'Cinzel',serif;font-size:22px;font-weight:900;letter-spacing:2px;background:linear-gradient(135deg,#c9a84c,#f5d07a,#b8902a);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.brand-s{font-size:10px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.4);margin-top:4px}
+.card{width:100%;max-width:400px;background:linear-gradient(160deg,#0c0700,#070707 55%,#0c0700);border:1.5px solid var(--gold-d);border-radius:18px;padding:24px 20px;box-shadow:0 0 60px rgba(201,168,76,.13),0 20px 60px rgba(0,0,0,.6);position:relative;overflow:hidden}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+.badge{display:inline-flex;align-items:center;gap:6px;background:rgba(201,168,76,.09);border:1px solid rgba(201,168,76,.3);border-radius:20px;padding:5px 13px;font-size:10px;font-weight:700;color:var(--gold-l);letter-spacing:1px;text-transform:uppercase;margin-bottom:14px}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--gold-l);box-shadow:0 0 6px var(--gold-l);animation:p 1.4s ease-in-out infinite}
+@keyframes p{0%,100%{opacity:.5;transform:scale(.8)}50%{opacity:1;transform:scale(1.2)}}
+.tabs{display:flex;gap:6px;background:rgba(255,255,255,.03);border:1px solid rgba(201,168,76,.14);border-radius:12px;padding:4px;margin-bottom:18px}
+.tab{flex:1;padding:10px;border:none;background:none;color:rgba(255,255,255,.55);font-size:12.5px;font-weight:700;border-radius:9px;cursor:pointer;transition:all .25s;font-family:inherit}
+.tab.on{background:linear-gradient(135deg,rgba(201,168,76,.22),rgba(201,168,76,.08));color:var(--gold-l);box-shadow:0 2px 10px rgba(0,0,0,.4)}
+.field{margin-bottom:12px}
+.field label{display:block;font-size:11px;font-weight:600;color:rgba(255,255,255,.5);margin-bottom:5px;letter-spacing:.4px}
+.field input{width:100%;padding:13px 14px;background:rgba(255,255,255,.03);border:1.5px solid rgba(201,168,76,.16);border-radius:10px;color:#fff;font-size:14px;font-family:inherit;transition:border-color .25s,box-shadow .25s;outline:none}
+.field input:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(201,168,76,.12)}
+.field input::placeholder{color:rgba(255,255,255,.25)}
+.row2{display:flex;gap:10px}
+.row2 .field{flex:1}
+.hint{font-size:11px;color:var(--gold-l);text-align:center;margin:6px 0 14px;display:flex;align-items:center;justify-content:center;gap:6px}
+.submit{width:100%;padding:15px;border:none;border-radius:11px;background:linear-gradient(90deg,var(--gold-d),var(--gold-l),var(--gold-d));background-size:200%;animation:sh 2.6s linear infinite;font-size:15px;font-weight:800;color:#000;cursor:pointer;letter-spacing:.3px;font-family:inherit;box-shadow:0 0 24px rgba(245,208,122,.3);transition:transform .15s}
+.submit:hover{transform:translateY(-1px)}
+.submit:active{transform:scale(.99)}
+.submit:disabled{opacity:.6;cursor:wait;animation:none}
+@keyframes sh{0%{background-position:200%}100%{background-position:-200%}}
+.msg{margin-top:14px;font-size:12.5px;line-height:1.5;text-align:center;padding:11px 12px;border-radius:10px;display:none}
+.msg.show{display:block;animation:fu .3s ease}
+.msg.err{background:rgba(220,60,60,.1);border:1px solid rgba(220,60,60,.35);color:#ff9a9a}
+.msg.ok{background:rgba(60,200,120,.08);border:1px solid rgba(60,200,120,.3);color:#8fe0b0}
+.msg.info{background:rgba(201,168,76,.08);border:1px solid rgba(201,168,76,.28);color:var(--gold-l)}
+@keyframes fu{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.foot{margin-top:18px;font-size:10.5px;color:rgba(255,255,255,.3);text-align:center;line-height:1.6}
+.foot a{color:var(--gold-l);text-decoration:none}
+.price-tag{display:inline-block;background:var(--gold);color:#000;font-weight:800;font-size:11px;padding:2px 9px;border-radius:20px;margin-left:4px}
+.back{position:fixed;top:16px;left:16px;z-index:5;font-size:12px;color:rgba(255,255,255,.5);text-decoration:none;display:flex;align-items:center;gap:5px}
+.back:hover{color:var(--gold-l)}
+.hidden{display:none!important}
+.spin{width:16px;height:16px;border:2px solid rgba(0,0,0,.3);border-top-color:#000;border-radius:50%;display:inline-block;animation:sp .7s linear infinite;vertical-align:-3px;margin-right:6px}
+@keyframes sp{to{transform:rotate(360deg)}}
+.ap-name{font-family:'Newsreader',Georgia,'Times New Roman',serif;font-weight:600;letter-spacing:.2px;background:linear-gradient(115deg,#7a5c1c 0%,#c9a84c 16%,#f7f1dd 32%,#f0c060 48%,#b8902a 64%,#e9e9ec 80%,#8a6a20 100%);background-size:220% auto;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;animation:apShine 5.5s linear infinite;text-decoration:none;white-space:nowrap;filter:drop-shadow(0 1px 1px rgba(0,0,0,.45))}
+@keyframes apShine{to{background-position:220% center}}
+@media (prefers-reduced-motion:reduce){.ap-name{animation:none}}
+</style>
+</head>
+<body>
+<canvas id="cv"></canvas>
+<a href="index.html" class="back">← Retour</a>
+
+<div class="wrap">
+  <div class="brand">
+    <div class="ap-name" style="font-size:15px;margin-bottom:7px">Alpha Protocol</div>
+    <div class="brand-t">ALPHA NEX</div>
+    <div class="brand-s">Formation privée · Strasbourg</div>
+  </div>
+
+  <div class="card">
+    <span class="badge"><span class="dot"></span> Accès formation <span class="price-tag">10€ / mois</span></span>
+
+    <div class="tabs">
+      <button class="tab on" id="tabSignup">Créer un compte</button>
+      <button class="tab" id="tabLogin">J'ai déjà un compte</button>
+    </div>
+
+    <!-- INSCRIPTION -->
+    <form id="formSignup" autocomplete="on">
+      <div class="row2">
+        <div class="field"><label>Prénom</label><input type="text" id="su_first" placeholder="Jean" required></div>
+        <div class="field"><label>Nom</label><input type="text" id="su_last" placeholder="Dupont" required></div>
+      </div>
+      <div class="field"><label>Email</label><input type="email" id="su_email" placeholder="jean@email.com" required></div>
+      <div class="row2">
+        <div class="field"><label>Téléphone</label><input type="tel" id="su_phone" placeholder="06 12 34 56 78" required></div>
+        <div class="field"><label>Code postal</label><input type="text" id="su_zip" placeholder="67000" inputmode="numeric" required></div>
+      </div>
+      <div class="field"><label>Mot de passe</label><input type="password" id="su_pass" placeholder="6 caractères min." required></div>
+      <div class="hint">⚡ Inscription en 30 secondes — accès immédiat au paiement</div>
+      <button type="submit" class="submit" id="btnSignup">Créer mon compte &amp; continuer →</button>
+    </form>
+
+    <!-- CONNEXION -->
+    <form id="formLogin" class="hidden" autocomplete="on">
+      <div class="field"><label>Email</label><input type="email" id="li_email" placeholder="jean@email.com" required></div>
+      <div class="field"><label>Mot de passe</label><input type="password" id="li_pass" placeholder="••••••••" required></div>
+      <div class="hint">🔒 Connexion sécurisée</div>
+      <button type="submit" class="submit" id="btnLogin">Me connecter &amp; continuer →</button>
+    </form>
+
+    <div class="field" style="margin-top:2px">
+      <label>🎟️ Code privilège (optionnel)</label>
+      <input type="text" id="privCode" placeholder="Accès direct sans paiement" autocomplete="off">
+    </div>
+
+    <div class="msg" id="msg"></div>
+  </div>
+
+  <p class="foot">
+    En continuant tu seras redirigé vers le paiement sécurisé <b style="color:var(--gold-l)">Revolut</b> (10€).<br>
+    Tes coordonnées sont enregistrées sur ton espace client privé.
+  </p>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+(function(){'use strict';
+
+/* ══════════════════════════════════════════════════════════
+   CONFIG  — 3 valeurs à vérifier
+   ══════════════════════════════════════════════════════════ */
+/* Supabase : pré-rempli avec TON projet (clé publiable = OK côté client) */
+var SUPABASE_URL = "https://pjvukiihkaqxrcqlrkpw.supabase.co";
+var SUPABASE_ANON = "sb_publishable_h9IZ8_vABurU1544_D0q_A_79LGsqu1";
+
+/* Cloudflare Worker qui crée la commande Revolut (voir revolut-worker.js).
+   ⚠️ Remplace par l'URL de TON worker déployé, ex : https://alpha-pay.strassweb67.workers.dev */
+var WORKER_URL = "https://late-silence-be46.strassweb67.workers.dev";
+
+/* Lien de paiement Revolut (fonctionne DÈS MAINTENANT, même sans worker).
+   Pour débloquer la vérification auto, déploie le worker (voir plus bas). */
+var REVOLUT_CHECKOUT = "https://checkout.revolut.com/pay/df41974d-cef3-4574-bf0f-fca4bdeac239";
+
+/* Page débloquée après paiement */
+var FORMATIONS_URL = "formations.html";
+/* ══════════════════════════════════════════════════════════ */
+
+var sb=null;
+try{ sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON); }catch(e){}
+
+var $=function(id){return document.getElementById(id);};
+function show(kind,html){var m=$('msg');m.className='msg show '+kind;m.innerHTML=html;}
+function hide(){var m=$('msg');m.className='msg';}
+function busy(btn,on,label){btn.disabled=on;btn.innerHTML=on?('<span class="spin"></span>'+(label||'Un instant…')):btn.dataset.txt;}
+
+/* Onglets */
+$('tabSignup').addEventListener('click',function(){
+  $('tabSignup').classList.add('on');$('tabLogin').classList.remove('on');
+  $('formSignup').classList.remove('hidden');$('formLogin').classList.add('hidden');hide();
+});
+$('tabLogin').addEventListener('click',function(){
+  $('tabLogin').classList.add('on');$('tabSignup').classList.remove('on');
+  $('formLogin').classList.remove('hidden');$('formSignup').classList.add('hidden');hide();
+});
+$('btnSignup').dataset.txt=$('btnSignup').innerHTML;
+$('btnLogin').dataset.txt=$('btnLogin').innerHTML;
+
+function emailOk(e){return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e);}
+function friendlyErr(m){
+  m=(m||'')+'';
+  if(/rate limit/i.test(m)) return "Trop d'inscriptions d'un coup. ⚠️ Désactive « Confirm email » dans Supabase (Authentication → Email) pour supprimer ça.";
+  if(/not confirmed|confirm/i.test(m)) return "⚠️ Ce compte attend une confirmation email. Désactive « Confirm email » dans Supabase pour un accès instantané.";
+  if(/invalid|credential/i.test(m)) return "Email ou mot de passe incorrect.";
+  return m;
+}
+
+/* Après compte / connexion → paiement Revolut sécurisé via le Worker */
+function goToPayment(){
+  show('info','<span class="spin" style="border-top-color:var(--gold-l);border-color:rgba(201,168,76,.3)"></span> Préparation du paiement sécurisé…');
+  /* PRIORITÉ : ton lien de paiement Revolut (marche sans clé secrète).
+     Paie avec le MÊME email que ton compte pour l'accès auto. */
+  if(REVOLUT_CHECKOUT && !/VOTRE-LIEN/i.test(REVOLUT_CHECKOUT)){ window.location.href=REVOLUT_CHECKOUT; return; }
+  /* Sinon : création de commande via le worker (nécessite la clé Revolut Merchant sk_...). */
+  if(/VOTRE-WORKER/i.test(WORKER_URL)){
+    show('err','⚠️ Paiement non configuré (ni lien Revolut, ni worker).');
+    return;
+  }
+  sb.auth.getSession().then(function(r){
+    var session=r&&r.data&&r.data.session;
+    if(!session){ show('err','Session introuvable, reconnecte-toi.'); return; }
+    return fetch(WORKER_URL.replace(/\/$/,'')+'/create-order',{
+      method:'POST',
+      headers:{'Authorization':'Bearer '+session.access_token,'Content-Type':'application/json'}
+    }).then(function(res){return res.json();}).then(function(j){
+      if(j&&j.checkout_url){ window.location.href=j.checkout_url; }
+      else{ show('err','Impossible de créer le paiement.<br>'+((j&&j.error)||'Réessaie dans un instant.')); }
+    });
+  }).catch(function(err){ show('err','Erreur paiement : '+err.message); });
+}
+
+/* Après compte/connexion : code privilège saisi ? -> on le vérifie ; sinon -> paiement */
+function afterAuth(){
+  var code=((document.getElementById('privCode')||{}).value||'').trim();
+  if(code){ redeemPrivilege(code); return; }
+  /* Paiement UNIQUE : déjà payé -> espace client direct ; sinon -> paiement. */
+  if(/VOTRE-WORKER/i.test(WORKER_URL)){ goToPayment(); return; }
+  show('info','<span class="spin" style="border-top-color:var(--gold-l);border-color:rgba(201,168,76,.3)"></span> Vérification de ton accès…');
+  sb.auth.getSession().then(function(r){
+    var s=r&&r.data&&r.data.session; if(!s){ goToPayment(); return; }
+    return fetch(WORKER_URL.replace(/\/$/,'')+'/access',{headers:{'Authorization':'Bearer '+s.access_token}})
+      .then(function(res){return res.json();}).then(function(j){
+        if(j&&j.paid){ window.location.href=FORMATIONS_URL; }  /* déjà payé -> espace client */
+        else { goToPayment(); }                                /* pas payé -> paiement */
+      });
+  }).catch(function(){ goToPayment(); });
+}
+
+/* Code privilège -> vérifié par le worker (Treza670 / promoexclusive) -> accès direct */
+function redeemPrivilege(code){
+  show('info','<span class="spin" style="border-top-color:var(--gold-l);border-color:rgba(201,168,76,.3)"></span> Vérification du code…');
+  if(/VOTRE-WORKER/i.test(WORKER_URL)){
+    show('err','⚠️ Les codes privilège nécessitent le worker déployé.');
+    return;
+  }
+  sb.auth.getSession().then(function(r){
+    var s=r&&r.data&&r.data.session; if(!s){ show('err','Reconnecte-toi.'); return; }
+    return fetch(WORKER_URL.replace(/\/$/,'')+'/redeem-code',{
+      method:'POST',headers:{'Authorization':'Bearer '+s.access_token,'Content-Type':'application/json'},
+      body:JSON.stringify({code:code})
+    }).then(function(res){return res.json();}).then(function(j){
+      if(j&&j.ok){ window.location.href=FORMATIONS_URL; }
+      else{ show('err','❌ Code privilège invalide.'); }
+    });
+  }).catch(function(err){ show('err','Erreur de vérification du code.'); });
+}
+
+/* INSCRIPTION */
+$('formSignup').addEventListener('submit',function(e){
+  e.preventDefault();hide();
+  if(!sb){show('err','Supabase non chargé. Vérifie ta connexion.');return;}
+  var first=$('su_first').value.trim(),last=$('su_last').value.trim(),email=$('su_email').value.trim(),
+      phone=$('su_phone').value.trim(),zip=$('su_zip').value.trim(),pass=$('su_pass').value;
+  if(!first||!last||!email||!phone||!zip||!pass){show('err','Tous les champs sont obligatoires.');return;}
+  if(!emailOk(email)){show('err','Email invalide.');return;}
+  if(pass.length<6){show('err','Mot de passe : 6 caractères minimum.');return;}
+  busy($('btnSignup'),true,'Création du compte…');
+  sb.auth.signUp({email:email,password:pass,options:{data:{first_name:first,last_name:last,phone:phone,postal_code:zip}}})
+   .then(function(r){
+     if(r.error){ busy($('btnSignup'),false); 
+       if(/already|registered/i.test(r.error.message)){
+         return sb.auth.signInWithPassword({email:email,password:pass}).then(function(r2){
+           if(r2.error){ show('err','Un compte existe déjà. Vérifie ton mot de passe ou clique « J\'ai déjà un compte ».'); }
+           else { afterAuth(); }
+         });
+       }
+       show('err', friendlyErr(r.error.message)); return; }
+     /* Enregistre les coordonnées dans la table profiles (pour ton futur espace admin) */
+     var uid=r.data.user&&r.data.user.id;
+     var doProfile = uid ? sb.from('profiles').upsert({id:uid,first_name:first,last_name:last,email:email,phone:phone,postal_code:zip}) : Promise.resolve();
+     Promise.resolve(doProfile).finally(function(){
+       if(r.data.session){ afterAuth(); return; }
+       /* Pas de session -> connexion automatique immédiate (aucun message email) */
+       sb.auth.signInWithPassword({email:email,password:pass}).then(function(r2){
+         if(r2.error){ busy($('btnSignup'),false); show('err', friendlyErr(r2.error.message)); }
+         else { afterAuth(); }
+       });
+     });
+   }).catch(function(err){ busy($('btnSignup'),false); show('err','Erreur : '+err.message); });
+});
+
+/* CONNEXION */
+$('formLogin').addEventListener('submit',function(e){
+  e.preventDefault();hide();
+  if(!sb){show('err','Supabase non chargé.');return;}
+  var email=$('li_email').value.trim(),pass=$('li_pass').value;
+  if(!email||!pass){show('err','Email et mot de passe requis.');return;}
+  busy($('btnLogin'),true,'Connexion…');
+  sb.auth.signInWithPassword({email:email,password:pass}).then(function(r){
+    if(r.error){ busy($('btnLogin'),false); show('err', friendlyErr(r.error.message)); return; }
+    afterAuth();
+  }).catch(function(err){ busy($('btnLogin'),false); show('err','Erreur : '+err.message); });
+});
+
+/* Déjà connecté ? propose d'aller au paiement directement */
+if(sb){
+  sb.auth.getSession().then(function(r){
+    if(r&&r.data&&r.data.session){
+      show('info','Tu es déjà connecté. <a href="#" id="goPay" style="color:var(--gold-l);font-weight:700">Continuer vers le paiement →</a>');
+      var g=$('goPay'); if(g) g.addEventListener('click',function(ev){ev.preventDefault();afterAuth();});
+    }
+  });
+}
+
+/* Fond particules léger (même identité que index.html) */
+(function(){
+  var cv=$('cv'); if(!cv) return; var ctx=null; try{ctx=cv.getContext('2d');}catch(e){} if(!ctx) return;
+  var DPR=Math.min(window.devicePixelRatio||1,2),W,H,N=48;
+  function rz(){W=cv.width=innerWidth*DPR;H=cv.height=innerHeight*DPR;cv.style.width=innerWidth+'px';cv.style.height=innerHeight+'px';}
+  rz();addEventListener('resize',rz,{passive:true});
+  var pts=Array.from({length:N},function(){return{x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*.25*DPR,vy:(Math.random()-.5)*.2*DPR,r:(Math.random()*1.6+.8)*DPR,a:Math.random()*.4+.4};});
+  function d(){
+    ctx.clearRect(0,0,W,H);ctx.fillStyle='#000';ctx.fillRect(0,0,W,H);
+    for(var i=0;i<N;i++){var p=pts[i];p.x+=p.vx;p.y+=p.vy;if(p.x<0||p.x>W)p.vx*=-1;if(p.y<0||p.y>H)p.vy*=-1;
+      for(var j=i+1;j<N;j++){var q=pts[j],dx=p.x-q.x,dy=p.y-q.y,d2=dx*dx+dy*dy,m=160*DPR;if(d2<m*m){var t=1-Math.sqrt(d2)/m;ctx.strokeStyle='rgba(201,168,76,'+(t*t*.28)+')';ctx.lineWidth=.5*DPR;ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(q.x,q.y);ctx.stroke();}}
+      ctx.fillStyle='rgba(255,255,255,'+Math.max(.35,p.a)+')';ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fill();}
+    requestAnimationFrame(d);
+  }
+  try{d();}catch(e){}
+})();
+
+})();
+</script>
+</body>
+</html>
